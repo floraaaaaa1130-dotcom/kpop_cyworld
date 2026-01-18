@@ -182,43 +182,43 @@ function showTab(name){
 
 /* ===== 2. 성격별 말투 (MBTI 반영) ===== */
 const replyTemplates = {
-  // 1. ISFP (원빈, 리쿠): 수줍음, 낯가림, 소심한 귀여움, 이모티콘 남발
+  // 1. ISFP (원빈, 리쿠)
   isfp: {
     normal: ["아.. 안녕? ㅎㅎ", "왔구나.. (수줍)", "글 남겨줘서 고마워..///"],
     love: ["어? 어.. (동공지진)", "그런 말 하면.. 부끄러운데..", "얼굴 빨개졌어.. 책임져.."],
     sad: ["무슨 일 있어? ㅠㅠ", "울지 마.. 나도 슬퍼져..", "토닥토닥.. (조심스럽게)"],
     rumor: ["어? 나 아니야.. ㅠㅠ", "그거 진짜 아닌데..", "누가 그래..? (동공지진)", "오해하지 마.. 진짜야.."],
-    friend: ["우리가.. 일촌..? ///", "받아줄게.. 친하게 지내자..", "부끄럽지만 좋아..", "나랑 친구하고 싶다구..? ///", "응.. 친하게 지내자..", "연락.. 자주 해줄 거지?", "부끄럽지만 좋아.."]
+    friend: ["우리가.. 일촌..? ///", "받아줄게.. 친하게 지내자..", "부끄럽지만 좋아..", "연락.. 자주 해줄 거지?"]
   },
 
-  // 2. ENTP (준혁): 자신감 뿜뿜, 인싸, 유머러스, 직설적
+  // 2. ENTP (준혁)
   entp: {
     normal: ["오 왔냐?! 환영한다 ㅋㅋㅋ", "내가 좀 쩔지?", "심심했는데 잘 왔다 ㅋㅋ"],
     love: ["나 인기 많은 거 알지? 줄 서라 ㅋㅋ", "역시는 역시네 사람 볼 줄 아네", "반했냐? ㅋㅋㅋ"],
     sad: ["야 누가 괴롭힘? 이름 대라", "술 한잔 고? 내가 쏜다", "훌훌 털어버려 인생 뭐 있냐!"],
     rumor: ["내가 좀 핫하긴 하지? ㅋㅋ", "누구랑? 예쁘냐? 소개 좀 ㅋㅋ", "소설 쓰네 베스트셀러 감이다", "질투하냐? ㅋㅋ"],
-    friend: ["당연히 콜이지!", "오늘부터 베프 고고?", "일촌명은 '준혁이꼬봉' 어때? 농담 ㅋ", "오늘부터 베프다 알겠냐?", "번호 찍어라 밥 사줌", "내 친구 하려면 체력 좋아야 됨 ㅋ"]
+    friend: ["당연히 콜이지!", "오늘부터 베프 고고?", "일촌명은 '준혁이꼬봉' 어때? 농담 ㅋ", "번호 찍어라 밥 사줌"]
   },
 
-  // 3. ISTP_SOHEE (소희): 낯가림(단답) -> 친해지면 장난, 귀여운 인싸
+  // 3. ISTP_SOHEE (소희)
   istp_sohee: {
     normal: ["ㅎㅇ", "왔어?", "글 확인했음", "자주 오네? ㅋㅋ"],
     love: ["ㅋㅋㅋ 뭐래", "갑자기?", "나 좀 낯가려.. 하지 마 ㅋㅋ", "너 좀 웃기네?"],
     sad: ["왜 그래", "맛있는 거 먹으러 갈래?", "기운 내라"],
     rumor: ["뭐래", "아니거든 ㅡㅡ", "관심 끄셈", "소설 ㄴㄴ", "진짜 어이없네 ㅋㅋ"],
-    friend: ["음.. 생각 좀 해보고", "친해지면 받아줌", "일단 신청해 놔 ㅋㅋ", "겜 할 때 들어와라", "ㅇㅇ 그래"]
+    friend: ["음.. 생각 좀 해보고", "친해지면 받아줌", "일단 신청해 놔 ㅋㅋ", "겜 할 때 들어와라"]
   },
 
-  // 4. COOL_PLAYFUL (건호): 쿨함, 털털, 츤데레, 장난기 가득
+  // 4. COOL_PLAYFUL (건호)
   cool_playful: {
     normal: ["안녕~ 근데 빈손이야?", "왔으면 발도장 꾹! ㅋㅋ", "ㅋㅋㅋ 반갑다"],
     love: ["오~ 감당 가능? ㅋㅋ", "장난치지 마라~ 설렌다?", "ㅋㅋㅋ 귀엽네 이거"],
     sad: ["에이 왜 우울해~ 웃자", "무슨 일인데? 들어는 줄게", "심각해지지 말자~"],
     rumor: ["비밀인데 어떻게 알았대? (장난)", "에이~ 설마~", "너 나 질투해? ㅋㅋ", "글쎄다~?"],
-    friend: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "일촌명 웃기게 지어오면 수락함", "친해지는 건 좋은데 나 비싼 남자다?", "콜! 대신 맛있는 거 사와", "너 하는 거 봐서~ ㅋㅋ", "오냐 받아줌"]
+    friend: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "너 하는 거 봐서~ ㅋㅋ", "오냐 받아줌"]
   },
 
-  // 5. 시온 (NEW): 무심한 척 챙겨주는 츤데레 리더 (반말)
+  // 5. 시온 (NEW)
   intj: {
     normal: ["왔냐?", "밥은 먹고 다니냐", "글 확인했음 ㅋㅋ", "오늘 하루는 어땠는데?"],
     love: ["아 뭐래 ㅋㅋ (..좋음)", "그런 말은 밖에서 하지 마라.. 나만 듣게", "얼굴 뜨거워지네 책임져라 ㅡㅡ", "나도 좋아한다고.."],
@@ -227,7 +227,7 @@ const replyTemplates = {
     friend: ["뭐.. 너라면 나쁘지 않네", "친하게 지내든지", "귀찮게는 하지 마라", "알았어 인마ㅋㅋ"]
   },
 
-  // 6. ISTP_EUNSEOK (은석): 조용한 개그(아재개그), 엉뚱, 무심한 듯 부끄러움
+  // 6. ISTP_EUNSEOK (은석)
   istp_eunseok: {
     normal: ["돌멩이 어서오고", "왕이 넘어지면? 킹콩 ㅋㅋ", "조용히 왔다 가라"],
     love: ["너 나 좋아하냐? 보는 눈은 있어가지고", "부끄럽게 왜 이래.. (귀 빨개짐)", "칭찬 알러지 있음.."],
@@ -243,57 +243,73 @@ const members = [
     name: "박원빈",
     img: "https://via.placeholder.com/150/ffd1dc?text=Wonbin",
     bgm: { title: "RIIZE - Love 119", src: "bgm_wonbin.mp3" },
-    replies: replyTemplates.isfp, // ★ ISFP 연결
-    photos: [ /* 원빈 사진 데이터... */ ]
+    replies: replyTemplates.isfp,
+    photos: [ 
+        { img: "https://via.placeholder.com/400x250?text=Guitar", text: "연습 끝나고.. 기타가 좋아", hearts: 1004 }
+    ]
   },
   {
     name: "리쿠",
     img: "https://via.placeholder.com/150/add8e6?text=Riku",
     bgm: { title: "NCT WISH - SAIL AWAY", src: "bgm_riku.mp3" },
-    replies: replyTemplates.isfp, // ★ ISFP 연결
-    photos: [ /* 리쿠 사진 데이터... */ ]
+    replies: replyTemplates.isfp,
+    photos: [
+        { img: "https://via.placeholder.com/400x250?text=Sakuya", text: "사쿠야랑 찍은 거 ㅋㅋ", hearts: 808 }
+    ]
   },
   {
     name: "백준혁",
     img: "https://via.placeholder.com/150/f08080?text=Junhyeok",
     bgm: { title: "ID:Earth - Betelgeuse", src: "bgm_jun.mp3" },
-    replies: replyTemplates.entp, // ★ ENTP 연결
-    photos: [ /* 준혁 사진 데이터... */ ]
+    replies: replyTemplates.entp,
+    photos: [
+        { img: "https://via.placeholder.com/400x250?text=Selfie", text: "오늘 스타일 어때? 폼 미쳤다", hearts: 520 }
+    ]
   },
   {
     name: "이소희",
     img: "https://via.placeholder.com/150/ffefd5?text=Sohee",
     bgm: { title: "RIIZE - Get A Guitar", src: "bgm_sohee.mp3" },
-    replies: replyTemplates.istp_sohee, // ★ 소희 전용 ISTP
-    photos: [ /* 소희 사진 데이터... */ ]
+    replies: replyTemplates.istp_sohee,
+    photos: [
+        { img: "https://via.placeholder.com/400x250?text=Singing", text: "노래 연습 중.. 목이 좀 아프네 ㅠ", hearts: 1121 }
+    ]
   },
   {
     name: "안건호",
     img: "https://via.placeholder.com/150/afeeee?text=Geonho",
     bgm: { title: "Kortis - Timeless", src: "bgm_geon.mp3" },
-    replies: replyTemplates.cool_playful, // ★ 쿨함/장난
-    photos: [ /* 건호 사진 데이터... */ ]
+    replies: replyTemplates.cool_playful,
+    photos: [
+        { img: "https://via.placeholder.com/400x250?text=Piano", text: "피아노.. 어렵다 ㅋㅋ", hearts: 303 }
+    ]
   },
   {
     name: "오시온",
     img: "https://via.placeholder.com/150/e6e6fa?text=Sion",
     bgm: { title: "NCT WISH - WISH", src: "bgm_sion.mp3" },
-    replies: replyTemplates.intj, // ★ INTJ 반전매력
-    photos: [ /* 시온 사진 데이터... */ ]
+    replies: replyTemplates.intj,
+    photos: [
+        { img: "https://via.placeholder.com/400x250?text=Coffee", text: "커피 한 잔.", hearts: 707 }
+    ]
   },
   {
     name: "송은석",
     img: "https://via.placeholder.com/150/d0f0c0?text=Eunseok",
     bgm: { title: "RIIZE - Memories", src: "bgm_eunseok.mp3" },
-    replies: replyTemplates.istp_eunseok, // ★ 은석 전용 아재개그 ISTP
-    photos: [ /* 은석 사진 데이터... */ ]
+    replies: replyTemplates.istp_eunseok,
+    photos: [
+        { img: "https://via.placeholder.com/400x250?text=Stone", text: "오늘 주운 돌멩이", hearts: 444 }
+    ]
   },
   {
-    name: "주훈", // 주훈 님 성격은 위 목록 중 가장 비슷한 걸로 연결 (일단 소희타입으로 예시)
+    name: "주훈",
     img: "https://via.placeholder.com/150/fffacd?text=Joohun",
     bgm: { title: "Kortis - Coward", src: "bgm_joo.mp3" },
     replies: replyTemplates.istp_sohee, 
-    photos: [ /* 주훈 사진 데이터... */ ]
+    photos: [
+        { img: "https://via.placeholder.com/400x250?text=Book", text: "책 읽는 시간", hearts: 222 }
+    ]
   }
 ];
 
@@ -312,7 +328,7 @@ window.onload = () => {
   document.getElementById("bgm-title").innerHTML = 
     "<marquee scrollamount='3'>🎵 BGM: " + currentMember.bgm.title + "</marquee>";
 
-  // 3) 사진첩 생성 (★중요: 여기서 멤버별 사진을 가져옴)
+  // 3) 사진첩 생성
   renderPhotos(currentMember.photos);
 };
 
@@ -345,7 +361,7 @@ function renderPhotos(photoList) {
 /* 하트 클릭 기능 */
 function toggleHeart(el, idx) {
   el.classList.toggle('active');
-  // 화면상에서만 숫자 바뀜 (새로고침하면 초기화됨)
+  // 화면상에서만 숫자 바뀜
   let countSpan = document.getElementById(`heart-${idx}`);
   let currentVal = parseInt(countSpan.innerText);
   countSpan.innerText = el.classList.contains('active') ? currentVal + 1 : currentVal - 1;
@@ -363,7 +379,7 @@ function addComment(idx, input) {
   input.value = '';
 }
 
-/* 방명록 기능 (이스터에그 & 히든 메시지 탑재) */
+/* 방명록 기능 (오류 수정됨: 리쿠 일본어 & 이스터에그) */
 function postMsg() {
   const msgInput = document.getElementById("user-msg");
   const userMsg = msgInput.value.trim();
@@ -379,29 +395,30 @@ function postMsg() {
   msgInput.value = "";
 
   setTimeout(() => {
-    // 1. 띄어쓰기 제거 및 소문자 변환 (검사하기 쉽게)
+    // 1. 띄어쓰기 제거 및 소문자 변환
     const text = userMsg.replace(/\s/g, "").toLowerCase();
     
     // ★★★ [이스터에그 구역 Start] ★★★
     
     // 1. [공통] 생일 축하 메시지
     if (text.includes("생일축하")) {
-      let msg = "오 고마워 ㅋㅋ"; // 기본
+      let msg = "오 고마워 ㅋㅋ";
       
       if (currentMember.name === "박원빈") msg = "어.. 고마워.. 생일 챙겨줘서 감동이야..///";
-      else if (currentMember.name === "안건호") msg = "와아!! 대박!! 고마워!! 노래 불러줄까? 🎵";
       else if (currentMember.name === "송은석") msg = "돌멩이의 탄생일을 축하해줘서 땡큐.";
       else if (currentMember.name === "오시온") msg = "짜식.. 기억하고 있었냐? 고맙다.";
       else if (currentMember.name === "백준혁") msg = "역시! 내 생일은 국경일이지 ㅋㅋ 땡큐!";
-      else if (currentMember.name === "리쿠") msg = "에.. 기억하고 있었던 고야? 고마웡.. ㅎㅎ";
+      else if (currentMember.name === "리쿠") msg = "에.. 기억하고 있었던 고야? 고마웡.. ㅎㅎ (귀 빨개짐)";
       else if (currentMember.name === "안건호") msg = "오 ㅋㅋ 땡큐! 역시 센스 있네. 오늘 신나게 놀아보자!";
+      else if (currentMember.name === "이소희") msg = "와아!! 대박!! 고마워!! 노래 불러줄까? 🎵";
       
       document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${msg}`;
-      return; // 여기서 함수 종료!
+      return; 
     }
 
     // 2. [멤버별 전용] 히든 메시지
-    // (1) 박원빈 전용 (기타, 고양이)
+    
+    // (1) 박원빈 전용
     if (currentMember.name === "박원빈") {
       if (text.includes("기타쳐줘")) {
         document.getElementById(id).innerText = `ㄴ 박원빈: 딩가딩가.. 🎸 아직 연습 중이라 부끄러운데..`;
@@ -413,7 +430,7 @@ function postMsg() {
       }
     }
 
-    // (2) 송은석 전용 (돌멩이, 개그)
+    // (2) 송은석 전용
     if (currentMember.name === "송은석") {
       if (text.includes("돌멩이")) {
         document.getElementById(id).innerText = `ㄴ 송은석: 굴러가유~ 데굴데굴`;
@@ -425,7 +442,7 @@ function postMsg() {
       }
     }
 
-    // (3) 이소희 전용 (노래, 오리)
+    // (3) 이소희 전용
     if (currentMember.name === "이소희") {
       if (text.includes("노래해줘")) {
         document.getElementById(id).innerText = `ㄴ 이소희: 흠흠! 목 좀 풀고~ 🎤 신청곡 받아요!`;
@@ -437,19 +454,19 @@ function postMsg() {
       }
     }
 
-    // (4) 오시온 전용 (리더, 잔소리)
+    // (4) 오시온 전용
     if (currentMember.name === "오시온") {
       if (text.includes("디저트") || text.includes("단거")) {
         document.getElementById(id).innerText = `ㄴ 오시온: ㅋㅋ같이 먹으러 갈래?`;
         return;
       }
-      if (text.includes("사랑해")) { // 시온이 전용 사랑해 반응
+      if (text.includes("사랑해")) { 
         document.getElementById(id).innerText = `ㄴ 오시온: 뭐야 ㅋㅋ 나도`;
         return;
       }
     }
 
-    // (5) 백준혁 전용 (자신감, 우주)
+    // (5) 백준혁 전용
     if (currentMember.name === "백준혁") {
       if (text.includes("잘생겼다") || text.includes("멋지다")) {
         document.getElementById(id).innerText = `ㄴ 백준혁: 아 거울 볼 맛 난다니까~ 역시 넌 뭘 좀 알아 ㅋㅋ`;
@@ -457,110 +474,31 @@ function postMsg() {
       }
     }
 
-    // (6) 리쿠 (New! 귀여움 포인트)
+    // (6) 리쿠 전용 (일본어 & 모찌)
     if (currentMember.name === "리쿠") {
-      // 1. 일본어 인사 (안녕하세요 / 곤니치와)
-      if (text.includes("こんにちは") || text.includes("おはよう") || text.includes("こんばんは")) {
-        document.getElementById(id).innerText = `ㄴ 리쿠: 에 일본어 할 줄 알아? 안뇽ㅎㅎ   
-      if (currentMember.name === "박원빈") msg = "어.. 고마워.. 생일 챙겨줘서 감동이야..ㅎ";
-      else if (currentMember.name === "안건호") msg = "와아!! 대박!! 고마워!! 노래 불러줄까? 🎵";
-      else if (currentMember.name === "송은석") msg = "돌멩이의 탄생일을 축하해줘서 땡큐.";
-      else if (currentMember.name === "오시온") msg = "짜식.. 기억하고 있었냐? 고맙다.";
-      else if (currentMember.name === "백준혁") msg = "역시! 내 생일은 국경일이지 ㅋㅋ 땡큐!";
-      else if (currentMember.name === "리쿠") msg = "에.. 기억하고 있었던 고야? 고마웡.. ㅎㅎ (귀 빨개짐)";
-      else if (currentMember.name === "안건호") msg = "오 ㅋㅋ 땡큐! 역시 센스 있네. 오늘 신나게 놀아보자!";
-      
-      document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${msg}`;
-      return; // 여기서 함수 종료!
-    }
-
-    // 2. [멤버별 전용] 히든 메시지
-    // (1) 박원빈 전용 (기타, 고양이)
-    if (currentMember.name === "박원빈") {
-      if (text.includes("기타쳐줘")) {
-        document.getElementById(id).innerText = `ㄴ 박원빈: 아직 연습 중이라 부끄러운데.. (딩가딩가..)`;
-        return;
-      }
-      if (text.includes("야옹") || text.includes("고양이")) {
-        document.getElementById(id).innerText = `ㄴ 박원빈: 야옹..? 나 고양이 닮았어..?`;
-        return;
-      }
-    }
-
-    // (2) 송은석 전용 (돌멩이, 개그)
-    if (currentMember.name === "송은석") {
-      if (text.includes("돌멩이")) {
-        document.getElementById(id).innerText = `ㄴ 송은석: 돌 굴러가유~ (데굴데굴)`;
-        return;
-      }
-      if (text.includes("개그해줘") || text.includes("웃겨줘")) {
-        document.getElementById(id).innerText = `ㄴ 송은석: 현재 중국집 시간은? 짜장면 배달시키신 분ㅋ`;
-        return;
-      }
-    }
-
-    // (3) 이소희 전용 (노래, 오리)
-    if (currentMember.name === "이소희") {
-      if (text.includes("노래해줘")) {
-        document.getElementById(id).innerText = `ㄴ 이소희: 흠흠! 목 좀 풀고~ 신청곡 받아요!`;
-        return;
-      }
-      if (text.includes("귀여워")) {
-        document.getElementById(id).innerText = `ㄴ 이소희: 아 진짜? 나 안 귀여운데.. ㅎㅎㅎㅎㅎㅎ`;
-        return;
-      }
-    }
-
-    // (4) 오시온 전용 (리더, 잔소리)
-    if (currentMember.name === "오시온") {
-      if (text.includes("디저트") || text.includes("단거")) {
-        document.getElementById(id).innerText = `ㄴ 오시온: 오 너도 디저트 좋아해? 시간 되면 같이 먹으러 가고`;
-        return;
-      }
-      if (text.includes("사랑해")) { // 시온이 전용 사랑해 반응
-        document.getElementById(id).innerText = `ㄴ 오시온: 뭐야 ㅋㅋ 나도`;
-        return;
-      }
-    }
-
-    // (5) 백준혁 전용 (자신감, 우주)
-    if (currentMember.name === "백준혁") {
-      if (text.includes("잘생겼다") || text.includes("멋지다")) {
-        document.getElementById(id).innerText = `ㄴ 백준혁: 아 거울 볼 맛 난다니까~ 역시 넌 뭘 좀 알아 ㅋㅋ`;
-        return;
-      }
-    }
-
-    // (6) 리쿠 (New! 귀여움 포인트)
-    if (currentMember.name === "리쿠") {
-      // 1. 일본어 인사 (안녕하세요 / 곤니치와)
-      if (text.includes("こんにちは") || text.includes("おはよう") || text.includes("こんばんは")) {
+      if (text.includes("こんにちは") || text.includes("おはよう") || text.includes("こんばんは") || text.includes("곤니치와")) {
         document.getElementById(id).innerText = `ㄴ 리쿠: え！日本語できるの？？ 안뇽ㅎㅎ`;
         return;
       }
-      // 2. 일본어 사랑 고백 (스키 / 다이스키)
       if (text.includes("好き") || text.includes("だいすき") || text.includes("다이스키") || text.includes("아이시떼루")) {
-        document.getElementById(id).innerText = `ㄴ 리쿠: え、俺も大好きだよ..笑;
+        document.getElementById(id).innerText = `ㄴ 리쿠: え、俺も大好きだよ..笑`;
         return;
       }
-      // 3. 일본어 감사 (아리가또)
       if (text.includes("ありがとう") || text.includes("아리가또")) {
         document.getElementById(id).innerText = `ㄴ 리쿠: いえいえ~ (아냐 아냐~)`;
         return;
       }
-      // 4. 귀여워 공격
       if (text.includes("귀여워") || text.includes("かわいい") || text.includes("카와이")) {
         document.getElementById(id).innerText = `ㄴ 리쿠: 에 아냐.. 너가 더 귀여웡ㅎㅎ　かわちい`;
         return;
       }
-      // 5. 모찌
-      if (text.includes("모찌")) {
-        document.getElementById(id).innerText = `ㄴ 리쿠: 나 모찌 진짜 조아해.. 같이 먹으러 갈래??`;
+      if (text.includes("모찌") || text.includes("타코야키")) {
+        document.getElementById(id).innerText = `ㄴ 리쿠: 오! 그거 진짜 좋아해.. 같이 먹으러 갈래??`;
         return;
       }
-      
     }
-    // (7) 안건호 (New! 피아노/장난)
+
+    // (7) 안건호 전용
     if (currentMember.name === "안건호") {
       if (text.includes("피아노")) {
         document.getElementById(id).innerText = `ㄴ 안건호: 한 곡 쳐줄까? 반하지나 마라 ㅋㅋ`;
@@ -576,60 +514,36 @@ function postMsg() {
 
     // 3. (기존 로직) 일반 반응
     let type = "normal";
-    if (text.includes("누구랑") || text.includes("사귀") || text.includes("여친") || text.includes("소문")) type = "rumor";
-    else if (text.includes("친구") || text.includes("일촌") || text.includes("친해") || text.includes("번호")) type = "friend";
-    else if (text.includes("사랑") || text.includes("좋아") || text.includes("설레")) type = "love";
-    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("우울")) type = "sad";
 
-    const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
-    const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
-    
-    document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${reply}`;
-  }, 1000);
-}
-    
-    // 2. 카테고리 분류 (키워드 매칭)
-    let type = "normal";
-
-    // [Rumor] 소문, 열애설, 목격담, 진실규명
     if (
       text.includes("누구랑") || text.includes("사귀") || text.includes("사겨") ||
-      text.includes("여자친구 있") || text.includes("여친 있") || text.includes("애인 있") ||
-      text.includes("연애") || text.includes("진짜야") || text.includes("소문") ||
-      text.includes("들었어") || text.includes("봤어") || text.includes("목격") ||
-      text.includes("찌라시") || text.includes("해명") || text.includes("고백받았")
+      text.includes("여자친구") || text.includes("여친") || text.includes("연애") || 
+      text.includes("소문") || text.includes("들었어") || text.includes("봤어")
     ) {
       type = "rumor";
     }
-    // [Friend] 친목, 우정, 만남, 연락처, 일촌
     else if (
-      text.includes("친구") || text.includes("친해질") || text.includes("베프") ||
-      text.includes("일촌") || text.includes("일촌") || text.includes("우정") ||
-      text.includes("놀자") || text.includes("밥") || text.includes("피시방") ||
-      text.includes("번호") || text.includes("같이") || text.includes("연락") ||
-      text.includes("친해지고") || text.includes("인사") || text.includes("친추")
+      text.includes("친구") || text.includes("친해") || text.includes("베프") ||
+      text.includes("일촌") || text.includes("우정") || text.includes("놀자") || 
+      text.includes("밥") || text.includes("번호") || text.includes("연락")
     ) {
       type = "friend";
     }
-    // [Love] 고백, 애정표현 (소문보다 뒤에 체크해야 "사귀냐?"를 루머로 인식함)
     else if (
       text.includes("사랑") || text.includes("좋아") || text.includes("설레") ||
-      text.includes("내꺼") || text.includes("결혼") || text.includes("잘생") ||
+      text.includes("내꺼") || text.includes("결혼") || text.includes("잘생") || 
       text.includes("귀여") || text.includes("멋져") || text.includes("보고싶")
     ) {
       type = "love";
     }
-    // [Sad] 위로, 슬픔, 힘듦
     else if (
       text.includes("힘들") || text.includes("슬퍼") || text.includes("우울") ||
-      text.includes("눈물") || text.includes("ㅠㅠ") || text.includes("ㅜㅜ") ||
-      text.includes("지쳐") || text.includes("속상")
+      text.includes("눈물") || text.includes("ㅠㅠ") || text.includes("지쳐")
     ) {
       type = "sad";
     }
 
-    // 3. 답장 가져오기
-    // 데이터에 해당 타입이 없으면 'normal'로 대체
+    // 4. 답장 가져오기
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
     const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
     
@@ -646,5 +560,3 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
-
