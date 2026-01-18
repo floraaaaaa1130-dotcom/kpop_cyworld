@@ -598,8 +598,8 @@ function postMsg() {
     
     // 1. 여친/짝사랑 질문
     if (
-      text.includes("여친있어") || text.includes("여자친구있어") || text.includes("애인있어") || 
-      text.includes("사귀어") || text.includes("사귀는")
+      text.includes("여친있") || text.includes("여자친구있") || text.includes("좋아하는사람있") || 
+      text.includes("솔로") || text.includes("사귀는")
     ) {
       let loveMsg = "";
       if (currentMember.name === "박원빈") loveMsg = "좋아하는 사람은 있다..///";
@@ -681,5 +681,6 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
