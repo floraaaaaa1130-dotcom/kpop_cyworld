@@ -357,7 +357,7 @@ window.onload = () => {
   const bgm = document.getElementById("bgm");
   bgm.src = currentMember.bgm.src;
   document.getElementById("bgm-title").innerHTML = 
-    "<marquee scrollamount='3'>🎵 BGM: " + currentMember.bgm.title + "</marquee>";
+    "<marquee scrollamount='3'> ──────☆＊ BGM: " + currentMember.bgm.title + " ＊☆────── </marquee>";
 
   renderPhotos(currentMember.photos);
 };
@@ -426,15 +426,15 @@ function postMsg() {
     // ========================================================
     if (
       text.includes("여친있어") || text.includes("여자친구있어") || text.includes("애인있어") || 
-      text.includes("연애중") || text.includes("사귀는")
+      text.includes("사귀어") || text.includes("사귀는")
     ) {
       let loveMsg = "";
 
       // 1. 박원빈 (부희주) - 수줍음
       if (currentMember.name === "박원빈") {
         const msgs = [
-          "아.. 좋아하는 사람은 있어.. 이름이 희주야..///",
-          "희주가 내 맘을 받아줄까? ㅠㅠ 아직 말도 못 걸어봤는데..",
+          "좋아하는 사람 있어.. 부희주라고..///",
+          "짝사랑 중인데.. 아직 말도 못 걸어봤어ㅠㅠ",
           "희주라고.. 내 첫사랑 있어.. 이상형이야 (부끄)"
         ];
         loveMsg = msgs[Math.floor(Math.random() * msgs.length)];
@@ -545,8 +545,8 @@ function postMsg() {
     }
     if (currentMember.name === "리쿠") {
       if (text.includes("곤니치와") || text.includes("こんにちは")) { document.getElementById(id).innerText = `ㄴ 리쿠: え！日本語できるの？？ 안뇽ㅎㅎ`; return; }
-      if (text.includes("다이스키") || text.includes("好き")) { document.getElementById(id).innerText = `ㄴ 리쿠: え、俺も大好きだよ..笑`; return; }
-      if (text.includes("모찌") || text.includes("타코야키")) { document.getElementById(id).innerText = `ㄴ 리쿠: 오! 그거 진짜 좋아해.. 같이 먹으러 갈래??`; return; }
+      if (text.includes("다이스키") || text.includes("好き")) { document.getElementById(id).innerText = `ㄴ 리쿠: え、주니야? 주니면 좋겟당..ㅎㅎ고마워`; return; }
+      if (text.includes("모찌") || text.includes("타코야키")) { document.getElementById(id).innerText = `ㄴ 리쿠: 오! 나 모찌 진짜 조아해 같이 먹으러 갈래??`; return; }
     }
     if (currentMember.name === "안건호") {
       if (text.includes("피아노")) { document.getElementById(id).innerText = `ㄴ 안건호: 한 곡 쳐줄까? 반하지나 마라 ㅋㅋ`; return; }
@@ -577,3 +577,4 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
