@@ -109,8 +109,13 @@ button {
   padding:10px;
   margin-bottom:15px;
 }
-  
+
+  /* 줄바꿈과 줄간격 예쁘게 */
+.photo-post p {
+  white-space: pre-wrap; 
+  line-height: 1.4;
 }
+  
 .photo-post img {
   width:100%; margin-bottom:8px;
 }
@@ -208,6 +213,8 @@ const photos = [
   }
 ];
 
+  const photoWrap = document.getElementById('photos');
+  
 photos.forEach((p,idx)=>{
   const el=document.createElement('div');
   el.className='photo-post';
@@ -215,7 +222,7 @@ photos.forEach((p,idx)=>{
     <img src="${p.img}">
     <p>${p.text}</p>
     <span class="heart" onclick="toggleHeart(this,${idx})">♥</span>
-    <span id="heart-${idx}">0</span>
+    <span id="heart-${idx}">${p.hearts}</span>
     <div class="comments" id="comments-${idx}"></div>
     <input class="comment-input" placeholder="댓글 남기기"
       onkeydown="if(event.key==='Enter') addComment(${idx},this)">
@@ -363,6 +370,7 @@ document.getElementById("bgm-title").innerHTML =
   </script>
 </body>
 </html>
+
 
 
 
