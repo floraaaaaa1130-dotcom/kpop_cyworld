@@ -22,20 +22,66 @@ body {
   background:#b1b1b1; display:flex; justify-content:center;
   padding-top:40px; margin:0;
 }
-/* ▼▼▼ 여기 수정됨 (.wrapper 테두리 추가) ▼▼▼ */
+/* ===== 전체 레이아웃 (가로 배치로 변경) ===== */
 .wrapper {
   background:var(--main-blue);
-  padding:25px 15px 15px 25px;
+  /* 오른쪽 여백을 줄여서 탭이 바깥으로 나가는 느낌 방지 */
+  padding: 20px 0px 20px 20px; 
   border-radius:10px;
-  width:850px; height:550px;
-  border: 1px solid black; /* 싸이월드 감성 테두리 */
+  width:900px; /* 탭 공간만큼 살짝 넓힘 */
+  height:550px;
+  border: 1px solid black; /* 겉 테두리 */
+  display: flex; /* 좌우 배치 */
+  align-items: flex-start; /* 위쪽 정렬 */
 }
 
-/* ▼▼▼ 여기 수정됨 (.white-box 테두리 추가) ▼▼▼ */
+/* ===== 흰색 박스 (책 본문) ===== */
 .white-box {
-  background:white; border-radius:8px;
-  height:100%; display:flex; padding:15px;
-  border: 1px solid black; /* 싸이월드 감성 테두리 */
+  background:white; 
+  border-radius:8px;
+  height:100%; 
+  flex: 1; /* 남은 공간 다 차지 */
+  display:flex; 
+  padding:15px;
+  border: 1px solid black; /* 본문 테두리 */
+  margin-right: 0; /* 탭이랑 붙이기 위해 */
+}
+
+/* ===== 오른쪽 탭 (책갈피) 영역 ===== */
+.menu-container {
+  display: flex;
+  flex-direction: column; /* 세로 배치 */
+  gap: 5px; /* 버튼 사이 간격 */
+  padding-top: 15px; /* 위쪽 여백 */
+  margin-left: -1px; /* 흰색 박스 테두리와 살짝 겹치거나 붙게 */
+  z-index: 1;
+}
+
+.menu-tab {
+  background: var(--tab-color);
+  color: white;
+  padding: 8px 12px;
+  font-size: 13px;
+  border: 1px solid black;
+  border-left: none; /* 책에 붙은 느낌 */
+  border-radius: 0 5px 5px 0; /* 오른쪽만 둥글게 */
+  cursor: pointer;
+  width: 70px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.menu-tab:hover {
+  width: 80px; /* 마우스 올리면 툭 튀어나오는 효과 */
+}
+
+.menu-tab.active {
+  background: white; /* 활성화되면 흰색 (본문과 연결) */
+  color: black;
+  font-weight: bold;
+  border-left: 1px solid white; /* 본문 경계선 지우기 효과 */
+  margin-left: -2px; /* 살짝 왼쪽으로 밀어서 덮기 */
+  width: 80px;
 }
 .profile {
   width:28%; border-right:1px dashed #ccc;
@@ -46,6 +92,7 @@ body {
 .main-content {
   width:72%; padding-left:20px;
   display:flex; flex-direction:column;
+  height: 100%;
 }
   
 #bgm-title {
@@ -54,40 +101,27 @@ body {
   margin-top: 5px;
   letter-spacing: -1px;
 }
-  
-/* ===== 탭 ===== */
-.tabs {
-  display:flex; gap:10px; margin-bottom:10px;
-}
-.tab {
-  cursor:pointer;
-  padding:4px 8px;
-  border:1px solid #ccc;
-  background:#f5f5f5;
-  border-bottom: none; /* 탭 아래쪽은 트여있게 */
-}
-.tab.active {
-  background:white;
-  border-bottom:2px solid white; /* 활성화된 탭은 흰색박스와 연결된 느낌 */
-  font-weight:bold;
-  position: relative;
-  top: 2px; /* 살짝 내려서 덮는 느낌 */
-}
 
 /* ===== 공통 스크롤 영역 ===== */
 .content-area {
   flex-grow:1;
   overflow-y:auto;
-  border: 1px solid #ccc; /* 내용 영역도 얇은 테두리 추가 */
-  padding: 10px;
+  padding-right: 5px;
+  /* 스크롤바 디자인 */
+  scrollbar-width: thin;
+  scrollbar-color: #8cc6d1 #f1f1f1;
 }
+.content-area::-webkit-scrollbar { width: 8px; }
+.content-area::-webkit-scrollbar-thumb { background: #8cc6d1; border-radius: 4px; }
+.content-area::-webkit-scrollbar-track { background: #f1f1f1; }
+
 /* ===== 방명록 ===== */
 .guestbook-entry {
   background:#f6f6f6;
   padding:10px;
   margin-bottom:12px;
   border-radius:5px;
-  border: 1px dotted #ddd; /* 방명록 점선 테두리 */
+  border: 1px dotted #ccc;
 }
 .ai-reply {
   color:#ff6600;
@@ -95,31 +129,36 @@ body {
   border-top:1px dotted #ccc;
   padding-top:4px;
 }
-  
-.input-area {
-  margin-top:10px;
-  border-top:2px solid #8cc6d1;
-  padding-top:8px;
-}
 
 textarea {
-  width:96%;
+  width:100%;
   height:40px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-top: 10px;
+  font-family: 'GalmuriCondensed', monospace;
 }
 
 button {
   float:right;
   margin-top:6px;
   cursor:pointer;
+  border: 1px solid black;
+  background: white;
+  padding: 3px 10px;
+  font-family: 'GalmuriCondensed', monospace;
+  box-shadow: 1px 1px 0px #999;
 }
+button:active { box-shadow: none; transform: translate(1px, 1px); }
 
 /* ===== 사진첩 ===== */
 .photo-post {
   background:var(--bg-gray);
   padding:10px;
   margin-bottom:15px;
-  border: 1px solid #ddd; /* 사진첩 게시물 테두리 */
+  border: 1px solid #ccc;
 }
+
 .photo-post p {
   white-space: pre-wrap; 
   line-height: 1.4;
@@ -127,7 +166,7 @@ button {
   
 .photo-post img {
   width:100%; margin-bottom:8px;
-  border: 1px solid #ccc; /* 사진 테두리 */
+  border: 1px solid #ccc;
 }
 .heart {
   cursor:pointer;
@@ -146,49 +185,69 @@ button {
 input.comment-input {
   width:100%;
   margin-top:6px;
+  border: 1px solid #ccc;
+  padding: 3px;
+  font-family: 'GalmuriCondensed', monospace;
 }
 </style>
 </head>
 
 <body>
 <div class="wrapper">
-<div class="white-box">
+  
+  <div class="white-box">
+    <div class="profile">
+      <img id="profile-img" class="profile-img">
+      <p id="member-name"></p>
+      <p id="bgm-title"></p>
+      <div style="margin-top:20px; font-size:12px; color:#999;">
+        TODAY <span style="color:red">281</span> | TOTAL 12,345
+      </div>
+    </div>
 
-<div class="profile">
-  <img id="profile-img" class="profile-img">
-  <p id="member-name"></p>
-  <p id="bgm-title"></p>
-</div>
+    <div class="main-content">
+      <div id="guestbook" class="content-area">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold;">
+          방명록 (Guestbook)
+        </div>
+        <div id="guestbook-list"></div>
+        <textarea id="user-msg" placeholder="일촌 신청하고 가세효..."></textarea>
+        <button onclick="postMsg()">확인</button>
+      </div>
 
-<div class="main-content">
+      <div id="photos" class="content-area" style="display:none;">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold;">
+          사진첩 (Photo)
+        </div>
+        <div id="photo-list"></div>
+      </div>
+    </div>
+  </div>
 
-<div class="tabs">
-  <div class="tab active" onclick="showTab('guestbook')">방명록</div>
-  <div class="tab" onclick="showTab('photos')">사진첩</div>
-</div>
+  <div class="menu-container">
+    <div class="menu-tab" onclick="alert('준비중입니다!')">홈</div>
+    <div class="menu-tab" onclick="alert('준비중입니다!')">프로필</div>
+    <div class="menu-tab" onclick="alert('준비중입니다!')">다이어리</div>
+    <div id="tab-photos" class="menu-tab" onclick="showTab('photos')">사진첩</div>
+    <div id="tab-guestbook" class="menu-tab active" onclick="showTab('guestbook')">방명록</div>
+  </div>
 
-<div id="guestbook" class="content-area">
-  <div id="guestbook-list"></div>
-  <textarea id="user-msg" placeholder="일촌 신청하고 가세효..."></textarea>
-  <button onclick="postMsg()">확인</button>
-</div>
-
-<div id="photos" class="content-area" style="display:none;"></div>
-
-</div>
-</div>
 </div>
 
 <audio id="bgm" loop></audio>
-
+  
 <script>
-/* ===== 1. 탭 전환 기능 ===== */
+/* ===== 1. 탭 전환 기능 (수정됨) ===== */
 function showTab(name){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
+  // 모든 탭에서 active 제거
+  document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+  
+  // 컨텐츠 숨기기/보이기
   document.getElementById('guestbook').style.display = name==='guestbook'?'block':'none';
   document.getElementById('photos').style.display = name==='photos'?'block':'none';
-}
+
+  // 클릭한 탭 활성화
+  document.getElementById('tab-' + name).classList.add('active');
 
 /* ===== 2. 성격별 말투 (기본) ===== */
 const replyTemplates = {
@@ -286,13 +345,6 @@ const members = [
     bgm: { title: "RIIZE - Memories", src: "bgm_eunseok.mp3" },
     replies: replyTemplates.istp_eunseok,
     photos: [{ img: "https://via.placeholder.com/400x250?text=Stone", text: "오늘 주운 돌멩이", hearts: 444 }]
-  },
-  {
-    name: "주훈",
-    img: "https://via.placeholder.com/150/fffacd?text=Joohun",
-    bgm: { title: "Kortis - Coward", src: "bgm_joo.mp3" },
-    replies: replyTemplates.cool_playful, 
-    photos: [{ img: "https://via.placeholder.com/400x250?text=Book", text: "책 읽는 시간", hearts: 222 }]
   }
 ];
 
@@ -305,13 +357,13 @@ window.onload = () => {
   const bgm = document.getElementById("bgm");
   bgm.src = currentMember.bgm.src;
   document.getElementById("bgm-title").innerHTML = 
-    "<marquee scrollamount='3'> ･ﾟ*｡･ 🎵 BGM: " + currentMember.bgm.title + " ｡*･ﾟ </marquee>";
+    "<marquee scrollamount='3'>🎵 BGM: " + currentMember.bgm.title + "</marquee>";
 
   renderPhotos(currentMember.photos);
 };
 
 function renderPhotos(photoList) {
-  const photoWrap = document.getElementById('photos');
+  const photoWrap = document.getElementById('photo-list');
   photoWrap.innerHTML = ""; 
   if(!photoList || photoList.length === 0) {
     photoWrap.innerHTML = "<p style='padding:20px; text-align:center;'>아직 사진이 없어요...</p>";
@@ -374,7 +426,7 @@ function postMsg() {
     // ========================================================
     if (
       text.includes("여친있어") || text.includes("여자친구있어") || text.includes("애인있어") || 
-      text.includes("연애중") || text.includes("누구랑사귀")
+      text.includes("연애중") || text.includes("사귀는")
     ) {
       let loveMsg = "";
 
@@ -525,3 +577,4 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
