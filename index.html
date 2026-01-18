@@ -1,3 +1,13 @@
+네, 문제의 원인을 찾았습니다! 🧐
+
+아까 성격을 세분화하면서 데이터 구조는 [성격] -> [상황(love, normal 등)] 으로 단순하게 바꿨는데, 정작 답장을 꺼내오는 코드는 여전히 옛날 방식인 [성격] -> [기분(cool/sweet)] -> [상황] 을 찾고 있어서 에러가 났던 거예요.
+
+데이터에는 '기분(cool/sweet)' 단계가 없는데 찾으려고 하니 자바스크립트가 길을 잃고 멈춰버린 것입니다. (그래서 "..." 에서 멈춤)
+
+아래 코드는 postMsg 함수 부분을 완벽하게 수정한 전체 코드입니다. 복사해서 그대로 덮어씌우시면 답장이 아주 잘 달릴 거예요!
+
+HTML
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -144,30 +154,25 @@ input.comment-input {
 <div class="wrapper">
 <div class="white-box">
 
-<!-- 왼쪽 -->
 <div class="profile">
   <img id="profile-img" class="profile-img">
   <p id="member-name"></p>
   <p id="bgm-title"></p>
 </div>
 
-<!-- 오른쪽 -->
 <div class="main-content">
 
-<!-- 탭 -->
 <div class="tabs">
   <div class="tab active" onclick="showTab('guestbook')">방명록</div>
   <div class="tab" onclick="showTab('photos')">사진첩</div>
 </div>
 
-<!-- 방명록 -->
 <div id="guestbook" class="content-area">
   <div id="guestbook-list"></div>
   <textarea id="user-msg" placeholder="일촌 신청하고 가세효..."></textarea>
   <button onclick="postMsg()">확인</button>
 </div>
 
-<!-- 사진첩 -->
 <div id="photos" class="content-area" style="display:none;"></div>
 
 </div>
@@ -223,13 +228,13 @@ const replyTemplates = {
     ilchon: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "일촌명 웃기게 지어오면 수락함"]
   },
 
-  // 5. INTJ (시온): 차분, 철벽, 꼼꼼함 -> 가끔 터지는 반전 애교
+  // 5. 시온 (NEW): 무심한 척 챙겨주는 츤데레 리더 (반말)
   intj: {
-    normal: ["반갑습니다.", "글 확인했습니다.", "정리 정돈 중입니다.", "규칙을 지켜주세요."],
-    love: ["흠.. 싫지는 않네요.", "저 사실 애교 많아요.. (부끄)", "뿌잉.. 헉 잊으세요.", "당황스럽네요;;"],
-    sad: ["이성적으로 생각합시다.", "해결책을 찾아볼까요?", "그래도.. 힘내세요 (어색)"],
-    scrap: ["출처 명시 바랍니다.", "깔끔하게 퍼가세요.", "불펌은 사양합니다."],
-    ilchon: ["검토해보겠습니다.", "신뢰가 쌓이면 수락합니다.", "저랑 잘 맞으실까요?"]
+    normal: ["왔냐?", "밥은 먹고 다니냐", "글 확인했음 ㅋㅋ", "오늘 하루는 어땠는데?"],
+    love: ["아 뭐래 ㅋㅋ (..좋음)", "그런 말은 밖에서 하지 마라.. 나만 듣게", "얼굴 뜨거워지네 책임져라 ㅡㅡ", "나도 좋아한다고.."],
+    sad: ["누구냐 데려와라 혼내준다", "울지 말고 뚝", "이럴 땐 맛있는 거 먹어야 돼. 나오셈 사줌", "무슨 일인데. 말해봐 다 들어줄게"],
+    scrap: ["예쁘게 써라", "가져가는 건 좋은데 댓글은? ㅡㅡ", "너니까 봐준다 퍼가 ㅋㅋ"],
+    ilchon: ["당연히 받아주지", "이제 우리 베프다?", "일촌명은 귀여운 걸로 해와라 ㅋㅋ 거절 안 함"]
   },
 
   // 6. ISTP_EUNSEOK (은석): 조용한 개그(아재개그), 엉뚱, 무심한 듯 부끄러움
@@ -304,7 +309,6 @@ const members = [
 
 // 현재 접속한 멤버 랜덤 선택
 const currentMember = members[Math.floor(Math.random() * members.length)];
-const currentMood = Math.random() > 0.5 ? 'cool' : 'sweet'; // 기분 랜덤
 
 /* ===== 4. 초기화 및 사진첩 생성 함수 ===== */
 window.onload = () => {
@@ -369,7 +373,7 @@ function addComment(idx, input) {
   input.value = '';
 }
 
-/* 방명록 기능 (간소화) */
+/* 방명록 기능 (수정됨!) */
 function postMsg() {
   const msgInput = document.getElementById("user-msg");
   const userMsg = msgInput.value.trim();
@@ -385,16 +389,19 @@ function postMsg() {
   msgInput.value = "";
 
   setTimeout(() => {
-    // 답장 선택 로직 (간단 버전)
+    // 1. 메세지 타입 분류 (간단 버전)
     let type = "normal";
-    if(userMsg.includes("퍼가")) type="scrap";
-    else if(userMsg.includes("사랑")||userMsg.includes("좋아")) type="love";
-    else if(userMsg.includes("힘들")||userMsg.includes("ㅠㅠ")) type="sad";
+    if(userMsg.includes("퍼가") || userMsg.includes("스크랩")) type="scrap";
+    else if(userMsg.includes("사랑") || userMsg.includes("좋아") || userMsg.includes("사귀")) type="love";
+    else if(userMsg.includes("힘들") || userMsg.includes("ㅠㅠ") || userMsg.includes("우울")) type="sad";
+    else if(userMsg.includes("일촌") || userMsg.includes("신청")) type="ilchon";
     
-    // 안전하게 답장 가져오기
-    const replyPool = currentMember.replies[currentMood] || currentMember.replies['cool']; 
-    const replies = replyPool[type] || replyPool['normal'];
-    const reply = replies[Math.floor(Math.random() * replies.length)];
+    // 2. 답장 데이터 가져오기 (★수정된 부분★)
+    // 이제 중간 단계 없이 바로 replies[type]을 찾습니다.
+    const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
+    
+    // 3. 랜덤 선택
+    const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
     
     document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${reply}`;
   }, 1000);
@@ -409,11 +416,3 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
