@@ -44,7 +44,7 @@ body {
 }
   
 #bgm-title {
-  font-size: 9px;       /* 원하는 크기로 조절 (예: 11px, 12px) */
+  font-size: 11px;       /* 원하는 크기로 조절 (예: 11px, 12px) */
   color: #3b5998;        /* (선택사항) 싸이월드 짙은 파란색 */
   margin-top: 5px;       /* 위쪽 여백 조절 */
   letter-spacing: -1px;  /* 자간을 좁혀서 더 도트 느낌 나게 */
@@ -280,8 +280,8 @@ function addComment(idx,input){
 
       const bgm = document.getElementById("bgm");
       bgm.src = currentMember.bgm.src;
-      document.getElementById("bgm-title").innerText =
-        "🎵 BGM: " + currentMember.bgm.title;
+document.getElementById("bgm-title").innerHTML = 
+  "<marquee scrollamount='3'>🎵 BGM: " + currentMember.bgm.title + "</marquee>";
     };
 
     /* ===== 질문 분류 ===== */
@@ -343,6 +343,7 @@ function addComment(idx,input){
   </script>
 </body>
 </html>
+
 
 
 
