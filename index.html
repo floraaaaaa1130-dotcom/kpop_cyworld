@@ -22,16 +22,23 @@ body {
   background:#b1b1b1; display:flex; justify-content:center;
   padding-top:40px; margin:0;
 }
+
+/* ▼▼▼ 여기 수정됨 (.wrapper 테두리 추가) ▼▼▼ */
 .wrapper {
   background:var(--main-blue);
   padding:25px 15px 15px 25px;
   border-radius:10px;
   width:850px; height:550px;
+  border: 1px solid black; /* 싸이월드 감성 테두리 */
 }
+
+/* ▼▼▼ 여기 수정됨 (.white-box 테두리 추가) ▼▼▼ */
 .white-box {
   background:white; border-radius:8px;
   height:100%; display:flex; padding:15px;
+  border: 1px solid black; /* 싸이월드 감성 테두리 */
 }
+
 .profile {
   width:28%; border-right:1px dashed #ccc;
   padding-right:15px; text-align:center;
@@ -59,17 +66,22 @@ body {
   padding:4px 8px;
   border:1px solid #ccc;
   background:#f5f5f5;
+  border-bottom: none; /* 탭 아래쪽은 트여있게 */
 }
 .tab.active {
   background:white;
-  border-bottom:2px solid var(--cy-orange);
+  border-bottom:2px solid white; /* 활성화된 탭은 흰색박스와 연결된 느낌 */
   font-weight:bold;
+  position: relative;
+  top: 2px; /* 살짝 내려서 덮는 느낌 */
 }
 
 /* ===== 공통 스크롤 영역 ===== */
 .content-area {
   flex-grow:1;
   overflow-y:auto;
+  border: 1px solid #ccc; /* 내용 영역도 얇은 테두리 추가 */
+  padding: 10px;
 }
 
 /* ===== 방명록 ===== */
@@ -78,6 +90,7 @@ body {
   padding:10px;
   margin-bottom:12px;
   border-radius:5px;
+  border: 1px dotted #ddd; /* 방명록 점선 테두리 */
 }
 .ai-reply {
   color:#ff6600;
@@ -95,12 +108,16 @@ body {
 textarea {
   width:96%;
   height:40px;
+  border: 1px solid #ccc;
 }
 
 button {
   float:right;
   margin-top:6px;
   cursor:pointer;
+  border: 1px solid black;
+  background: #f6f6f6;
+  font-family: 'GalmuriCondensed', monospace;
 }
 
 /* ===== 사진첩 ===== */
@@ -108,6 +125,7 @@ button {
   background:var(--bg-gray);
   padding:10px;
   margin-bottom:15px;
+  border: 1px solid #ddd; /* 사진첩 게시물 테두리 */
 }
 
 .photo-post p {
@@ -117,6 +135,7 @@ button {
   
 .photo-post img {
   width:100%; margin-bottom:8px;
+  border: 1px solid #ccc; /* 사진 테두리 */
 }
 .heart {
   cursor:pointer;
@@ -135,6 +154,7 @@ button {
 input.comment-input {
   width:100%;
   margin-top:6px;
+  border: 1px solid #ccc;
 }
 </style>
 </head>
@@ -179,7 +199,7 @@ function showTab(name){
   document.getElementById('photos').style.display = name==='photos'?'block':'none';
 }
 
-/* ===== 2. 성격별 말투 (기본) ===== */
+/* ===== 2. 성격별 말투 (MBTI 반영) ===== */
 const replyTemplates = {
   isfp: {
     normal: ["아.. 안녕? ㅎㅎ", "왔구나.. (수줍)", "글 남겨줘서 고마워..///"],
@@ -229,7 +249,7 @@ const replyTemplates = {
 const members = [
   {
     name: "박원빈",
-    img: "wonbin_profile.png",
+    img: "wonbin_porfile.png",
     bgm: { title: "RIIZE - Love 119", src: "bgm_wonbin.mp3" },
     replies: replyTemplates.isfp,
     photos: [{ img: "https://via.placeholder.com/400x250?text=Guitar", text: "연습 끝나고.. 기타가 좋아", hearts: 1004 }]
@@ -362,17 +382,17 @@ function postMsg() {
     // ★ 1. [여친/짝사랑 질문] 개인별 맞춤 대사 (팬덤명 포함)
     // ========================================================
     if (
-      text.includes("여친있어") || text.includes("여자친구있어") || text.includes("애인있어") || 
-      text.includes("연애중") || text.includes("누구랑사귀")
+      text.includes("여친") || text.includes("여자친구") || text.includes("애인") || 
+      text.includes("사귀") || text.includes("연애") || text.includes("누구랑")
     ) {
       let loveMsg = "";
 
       // 1. 박원빈 (부희주) - 수줍음
       if (currentMember.name === "박원빈") {
         const msgs = [
-          "아.. 좋아하는 사람은 있어.. 이름이 희주야..///",
-          "희주가 내 맘을 받아줄까? ㅠㅠ 아직 말도 못 걸어봤는데..",
-          "희주라고.. 내 첫사랑 있어.. 이상형이야 (부끄)"
+          "아.. 여친은 아닌데.. 내가 짝사랑하는 사람은 있어.. 이름이 희주야..///",
+          "부희주.. 걔가 내 맘을 받아줄까? ㅠㅠ 아직 말도 못 걸어봤는데..",
+          "여친은 무슨.. 나 희주만 바라보는 중이다.."
         ];
         loveMsg = msgs[Math.floor(Math.random() * msgs.length)];
       }
@@ -382,7 +402,7 @@ function postMsg() {
         const msgs = [
           "내 여친? 음~ 노래로 힌트 줄까? 🎶 희주야~ 내 맘을 받아줘~",
           "희주라고.. 있어. 근데 비밀이다? 소문내지 마 ㅋㅋ",
-          "나 희주만 바라보는 중이다.."
+          "부희주.. 완전 내 이상형이지. (부끄)"
         ];
         loveMsg = msgs[Math.floor(Math.random() * msgs.length)];
       }
@@ -390,9 +410,9 @@ function postMsg() {
       // 3. 송은석 (부희주) - 돌멩이/개그
       else if (currentMember.name === "송은석") {
         const msgs = [
-          "내 여자친구 하려면 돌 씨로 개명해야함. 괜찮겠니?",
-          "희주가 유일하게 내 개그에 진심으로 웃어주더라. 그래서 좋아.",
-          "여친 없음. 짝사랑 중. 부희주라고.. 알지 모르겠네."
+          "내 여자친구 이름은 '돌' 자 돌림이야. 돌희주... 농담이고 그냥 희주.",
+          "희주가 유일하게 내 개그에 웃어주더라. 그래서 좋아.",
+          "여친은 없고.. 짝사랑 중. 희주라고.. 알지 모르겠네."
         ];
         loveMsg = msgs[Math.floor(Math.random() * msgs.length)];
       }
@@ -401,7 +421,7 @@ function postMsg() {
       else if (currentMember.name === "오시온") {
         const msgs = [
           "여친? 없고, 준희라고.. 내가 많이 좋아하는 애는 있어.",
-          "시준희 보고 있냐? 나 너 좋아한다.. 아 이거 비밀이었는데",
+          "준희야.. 보고 있냐? 나 너 좋아한다.. (아 이거 비밀인데)",
           "내 마음속엔 준희뿐이다. 딴 데 가서 헛소문 내지 마라."
         ];
         loveMsg = msgs[Math.floor(Math.random() * msgs.length)];
@@ -410,9 +430,9 @@ function postMsg() {
       // 5. 리쿠 (시준희) - 일본어/귀여움
       else if (currentMember.name === "리쿠") {
         const msgs = [
-          "에 여자친구 없어..!! 근데 조아하는 사람은 있어 헤헤",
-          "ジュンヒちゃんだいすきだよん..///)",
-          "짝사랑 너무 힘드러 ㅠㅠ"
+          "에?! 여자친구?! 없어..!! 근데 준희는 좋아해.. 헤헤",
+          "준희 짱.. 다이스키../// (얼굴 빨개짐)",
+          "아직 고백은 못 했는데.. 준희 짝사랑 중임. 응원해줘.."
         ];
         loveMsg = msgs[Math.floor(Math.random() * msgs.length)];
       }
@@ -433,6 +453,16 @@ function postMsg() {
           "너잖아. 모른 척 하기냐? ㅋㅋ 실망인데~",
           "에이~ 없는 거 알면서 그러네~ 찔러보는 거야?",
           "너 꼬시려고 비워둠 ㅋ 넘어올래?"
+        ];
+        loveMsg = msgs[Math.floor(Math.random() * msgs.length)];
+      }
+
+      // 8. 주훈 (없음) - 쿨/능글
+      else if (currentMember.name === "주훈") {
+        const msgs = [
+          "글쎄.. 있을까 없을까? 맞춰봐 ㅋㅋ",
+          "지금 내 앞에 있는 사람이 내 여친 아닌가?",
+          "비밀. 친해지면 알려줌 ㅋㅋ"
         ];
         loveMsg = msgs[Math.floor(Math.random() * msgs.length)];
       }
@@ -514,4 +544,3 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
