@@ -197,14 +197,15 @@ input.comment-input {
   position: absolute;
   font-size: 20px;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.8;
   transition: transform 0.2s;
-  z-index: 10;
+  z-index: 999; /* 다른 요소들보다 위에 뜨게 */
   animation: float 2s infinite ease-in-out;
+  display: none; /* ★ 처음엔 숨김 ★ */
 }
 .hidden-acorn:hover { transform: scale(1.2); opacity: 1; }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
+  
 /* 2. 공통 모달 (도토리 & 일촌신청) */
 .modal-overlay {
   display: none; position: fixed; top:0; left:0; width:100%; height:100%;
@@ -242,9 +243,9 @@ input.comment-input {
     </div>
     <div class="modal-body">
       <h3>도토리 3개 발견!</h3>
-      <p>선물: <b style="color:red">미공개 폴라로이드</b></p>
+      <p>선물이 도착했습니다.</b></p>
       <img src="https://via.placeholder.com/200x200?text=SECRET+PHOTO" style="margin:10px 0; border:1px solid #ccc;">
-      <p style="font-size:11px; color:#999;">(캡처해서 자랑하세요!)</p>
+      <p style="font-size:11px; color:#999;">(너한테만 보여주는 사진이야♥)</p>
       <button class="modal-btn" onclick="closeModal('reward-modal')">닫기</button>
     </div>
   </div>
@@ -357,39 +358,55 @@ function acceptIlchon() {
   closeModal('ilchon-modal');
 }
   
-/* ===== [기능 2] 도토리 찾기 로직 ===== */
+/* ===== [기능 2] 도토리 찾기 (시간차 등장이벤트) ===== */
 let foundCount = 0;
-function spawnAcorns() {
-  // 도토리를 화면의 랜덤한 위치에 배치 (wrapper 내부)
-  for(let i=1; i<=3; i++) {
-    const acorn = document.getElementById(`acorn-${i}`);
-    // top: 5% ~ 90%, left: 5% ~ 90%
-    acorn.style.top = Math.floor(Math.random() * 85 + 5) + "%";
-    acorn.style.left = Math.floor(Math.random() * 85 + 5) + "%";
-  }
+
+// ★ 시간차로 도토리가 뿅! 나타나는 함수
+function scheduleAcorns() {
+  // 도토리 1: 15초 뒤 (15000ms)
+  setTimeout(() => showSingleAcorn(1), 15000); 
+  
+  // 도토리 2: 1분 뒤 (60000ms)
+  setTimeout(() => showSingleAcorn(2), 60000); 
+  
+  // 도토리 3: 1분 30초 뒤 (90000ms)
+  setTimeout(() => showSingleAcorn(3), 90000); 
 }
 
+function showSingleAcorn(id) {
+  const acorn = document.getElementById(`acorn-${id}`);
+  if(!acorn) return;
+
+  // 랜덤 위치 설정 (흰색 박스 내부)
+  acorn.style.top = Math.floor(Math.random() * 80 + 10) + "%"; // 10~90% 사이
+  acorn.style.left = Math.floor(Math.random() * 80 + 10) + "%";
+  
+  // 숨김 해제
+  acorn.style.display = 'block';
+}
+  
 function foundAcorn(id) {
   const acorn = document.getElementById(`acorn-${id}`);
   if(acorn.style.display === 'none') return;
 
-  acorn.style.display = 'none'; // 도토리 숨김
+  acorn.style.display = 'none'; // 클릭하면 사라짐
   foundCount++;
   document.getElementById('acorn-count').innerText = foundCount;
 
-  if(foundCount === 3) {
-    // 3개 다 찾으면 보상 팝업
+if(foundCount === 3) {
+    // ★ 여기서 멤버별 시크릿 포토로 이미지 교체! ★
+    document.getElementById('reward-img').src = currentMember.secretPhoto;
+    
     setTimeout(() => {
       document.getElementById('reward-modal').style.display = 'flex';
-      // 폭죽 효과처럼 BGM 볼륨 잠깐 키우기
       const bgm = document.getElementById("bgm");
       if(!bgm.paused) bgm.volume = 1.0; 
     }, 300);
   } else {
-    alert(`도토리를 찾았다! (${foundCount}/3)\n나머지도 찾아보세요!`);
+    alert(`도토리를 찾았다! (${foundCount}/3)\n남은 도토리가 나올 때까지 기다려보세요!`);
   }
 }
-
+  
 function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('guestbook').style.display = name==='guestbook'?'block':'none';
@@ -462,49 +479,80 @@ const members = [
     img: "wonbin_profile.png",
     bgm: { title: "RIIZE - Love 119", src: "bgm_wonbin.mp3" },
     replies: replyTemplates.isfp,
-    photos: [{ img: "wonbin_guitar.png", text: "오랜만에 기타..", hearts: 1004 }]
+    // ★ secretPhoto에 실제 멤버 사진 URL을 넣으세요!
+    secretPhoto: "https://via.placeholder.com/400x400/ffd1dc/333?text=WONBIN+SECRET+PHOTO",
+    photos: [
+      { img: "https://via.placeholder.com/400x250/333/fff?text=Practice", text: "오늘 연습 끝..\n손가락 물집 잡혔다 ㅠㅠ\n그래도 재밌어 🎸", hearts: 1004 },
+      { img: "https://via.placeholder.com/400x250/ffe4e1/333?text=Cat", text: "길 가다 만난 고양이..\n나랑 눈 마주침..\n귀엽다.. (나 말고 고양이)", hearts: 850 },
+      { img: "https://via.placeholder.com/400x250/fff/333?text=Sky", text: "하늘 예쁘네..\n오늘도 화이팅..!", hearts: 920 }
+    ]
   },
   {
     name: "리쿠",
     img: "riku_profile.png",
     bgm: { title: "NCT WISH - SAIL AWAY", src: "bgm_riku.mp3" },
     replies: replyTemplates.isfp,
-    photos: [{ img: "https://via.placeholder.com/400x250?text=Sakuya", text: "사쿠야랑 찍은 거 ㅋㅋ", hearts: 808 }]
-  },
+    secretPhoto: "https://via.placeholder.com/400x400/add8e6/333?text=RIKU+SECRET+PHOTO",
+    photos: [
+      { img: "https://via.placeholder.com/400x250/add8e6/fff?text=Sakuya", text: "사쿠야랑 찍은 거 ㅋㅋ\n우리 좀 귀여운 듯?", hearts: 808 },
+      { img: "https://via.placeholder.com/400x250/ffdab9/333?text=Takoyaki", text: "타코야키 먹고 싶다..\n같이 먹으러 갈 사람 구함 (1/100)", hearts: 777 }
+    ]
+},
   {
     name: "백준혁",
     img: "jun_profile.png",
     bgm: { title: "ID:Earth - Betelgeuse", src: "bgm_jun.mp3" },
     replies: replyTemplates.entp,
-    photos: [{ img: "https://via.placeholder.com/400x250?text=Selfie", text: "오늘 스타일 어때? 폼 미쳤다", hearts: 520 }]
-  },
+    secretPhoto: "https://via.placeholder.com/400x400/f08080/fff?text=JUNHYEOK+SECRET",
+    photos: [
+      { img: "https://via.placeholder.com/400x250/000/fff?text=Selfie", text: "오늘 스타일 어때? 폼 미쳤다\n반박 시 님 말이 다 틀림 ㅋㅋ", hearts: 520 },
+      { img: "https://via.placeholder.com/400x250/555/fff?text=Vibes", text: "새벽 감성..\n이 노래 쥑이네\n다들 들어봐라", hearts: 480 }
+    ]
+},
   {
     name: "이소희",
     img: "sohee_profile.png",
     bgm: { title: "RIIZE - Get A Guitar", src: "bgm_sohee.mp3" },
     replies: replyTemplates.istp_sohee,
-    photos: [{ img: "https://via.placeholder.com/400x250?text=Singing", text: "노래 연습 중.. 목이 좀 아프네 ㅠ", hearts: 1121 }]
+    photos: secretPhoto: "https://via.placeholder.com/400x400/ffefd5/333?text=SOHEE+SECRET",
+    photos: [
+      { img: "https://via.placeholder.com/400x250/ff69b4/fff?text=Singing", text: "노래 연습 중.. 🎶\n목이 좀 아프네 ㅠ\n그래도 고음 뚫었다!!", hearts: 1121 },
+      { img: "https://via.placeholder.com/400x250/fffacd/333?text=Hat", text: "새로 산 모자 어때?\n좀 힙한가? ㅋㅋ", hearts: 990 },
+      { img: "https://via.placeholder.com/400x250/87ceeb/fff?text=Cloud", text: "구름이 몽글몽글\n오리 같아 🐤", hearts: 880 }
+    ]
   },
   {
     name: "안건호",
     img: "gun_profile.png",
     bgm: { title: "Kortis - Timeless", src: "bgm_geon.mp3" },
     replies: replyTemplates.cool_playful,
-    photos: [{ img: "gun2.png", text: "엄질머리랑ㅋ", hearts: 303 }]
+    photos: secretPhoto: "https://via.placeholder.com/400x400/afeeee/333?text=GEONHO+SECRET",
+    photos: [
+      { img: "https://via.placeholder.com/400x250/afeeee/333?text=Piano", text: "피아노.. 어렵다 ㅋㅋ\n근데 내가 치니까 좀 멋있는 듯?", hearts: 303 },
+      { img: "https://via.placeholder.com/400x250/eee/333?text=FunnyFace", text: "엽사 올리려다 참는다\n내 이미지 보호해야지 ㅋㅋ", hearts: 250 }
+    ]
   },
   {
     name: "오시온",
     img: "sion_profile.png",
     bgm: { title: "NCT WISH - WISH", src: "bgm_sion.mp3" },
     replies: replyTemplates.intj,
-    photos: [{ img: "https://via.placeholder.com/400x250?text=Coffee", text: "커피 한 잔.", hearts: 707 }]
+    secretPhoto: "https://via.placeholder.com/400x400/e6e6fa/333?text=SION+SECRET",
+    photos: [
+      { img: "https://via.placeholder.com/400x250/e6e6fa/333?text=Coffee", text: "커피 한 잔의 여유.\n카페인 충전 완료.", hearts: 707 },
+      { img: "https://via.placeholder.com/400x250/333/fff?text=Team", text: "연습실.\n애들이 말을 안 듣는다.\n그래도 귀여우니까 봐줌.", hearts: 900 }
+    ]
   },
   {
     name: "송은석",
     img: "dol_profile.png",
     bgm: { title: "RIIZE - Memories", src: "bgm_eunseok.mp3" },
     replies: replyTemplates.istp_eunseok,
-    photos: [{ img: "https://via.placeholder.com/400x250?text=Stone", text: "오늘 주운 돌멩이", hearts: 444 }]
+    secretPhoto: "https://via.placeholder.com/400x400/d0f0c0/333?text=EUNSEOK+SECRET",
+    photos: [
+      { img: "https://via.placeholder.com/400x250/808080/fff?text=Stone", text: "오늘 주운 돌멩이 1호.\n이름은 '돌돌이'로 지었다.\n단단해 보인다.", hearts: 444 },
+      { img: "https://via.placeholder.com/400x250/a9a9a9/fff?text=Stone2", text: "이건 돌멩이 2호.\n약간 찌그러진 게 매력임.\n나랑 닮았나?", hearts: 333 }
+    ]
   }
 ];
 
@@ -516,7 +564,7 @@ window.onload = () => {
   if(inputName) myName = inputName;
 
   document.getElementById("profile-img").src = currentMember.img;
-  document.getElementById("member-name").innerText = currentMember.name + " 미니홈피";
+  document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
   
   const bgm = document.getElementById("bgm");
   bgm.src = currentMember.bgm.src;
@@ -524,10 +572,10 @@ window.onload = () => {
     "<marquee scrollamount='3'>🎵 BGM: " + currentMember.bgm.title + "</marquee>";
 
   renderPhotos(currentMember.photos);
-  // ★ 도토리 배치 (추가됨)
-  spawnAcorns();
+// ★ 도토리 스케줄링 (시간차 등장)
+  scheduleAcorns();
 };
-
+  
 function renderPhotos(photoList) {
   const photoWrap = document.getElementById('photo-list');
   photoWrap.innerHTML = ""; 
@@ -751,6 +799,7 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
