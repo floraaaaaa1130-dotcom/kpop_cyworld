@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>☆-..- 2010년의 어느 날 -..-☆</title>
+<title>☆-..- 2005년의 어느 날 -..-☆</title>
 
 <style>
 @font-face {
@@ -310,7 +310,9 @@ input.comment-input {
   padding: 8px 20px; cursor: pointer; font-weight: bold; width: 100%;
 }
 
-/* 일반 모달 */
+/* ★ 일반 알림 모달 (alert 대체용) ★ */
+#alert-modal { display: none; } /* 초기엔 숨김 */
+
 .modal-overlay {
   display: none; position: fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.5); z-index: 9999;
@@ -346,6 +348,19 @@ input.comment-input {
     <p style="font-size:12px; color:#666;">⋌˫용ṑㅏ실 닉네임을 입력ṑΗ㈜パㅔ요.</p>
     <input type="text" id="nickname-input" class="entry-input" placeholder="닉네임 입력" onkeydown="if(event.key==='Enter') enterSite()">
     <button class="entry-btn" onclick="enterSite()">입ጉ6㉭ドㄱI ♬</button>
+  </div>
+</div>
+
+<div id="alert-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span>알림</span>
+      <span style="cursor:pointer" onclick="closeModal('alert-modal')">X</span>
+    </div>
+    <div class="modal-body">
+      <p id="alert-msg" style="margin: 20px 0; font-size: 14px;"></p>
+      <button class="modal-btn" onclick="closeModal('alert-modal')">확인</button>
+    </div>
   </div>
 </div>
 
@@ -477,8 +492,8 @@ input.comment-input {
 
   <div class="menu-container">
     <div id="tab-home" class="menu-tab active" onclick="showTab('home')">홈</div>
-    <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">프로필</div>
-    <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">다이어리</div>
+    <div class="menu-tab" onclick="showAlert('준비중입Ꮮㅣ㉰')">프로필</div>
+    <div class="menu-tab" onclick="showAlert('준비중입Ꮮㅣ㉰')">다이어리</div>
     <div id="tab-photos" class="menu-tab" onclick="showTab('photos')">사진첩</div>
     <div id="tab-guestbook" class="menu-tab" onclick="showTab('guestbook')">방명록</div>
   </div>
@@ -487,7 +502,6 @@ input.comment-input {
 <audio id="bgm" loop></audio>
   
 <script>
-/* ★ 0. 초기 설정 ★ */
 let myName = "익명";
 let guestbookCount = 0; 
 
@@ -495,23 +509,44 @@ function closeModal(id) {
   document.getElementById(id).style.display = 'none';
 }
 
-/* ★ 1. 입장하기 기능 (BGM 자동재생 트리거) ★ */
+/* ★ 커스텀 알림창 표시 함수 ★ */
+function showAlert(msg) {
+  document.getElementById('alert-msg').innerText = msg;
+  document.getElementById('alert-modal').style.display = 'flex';
+}
+
+/* ★ 입장하기 버튼 클릭 시 실행 ★ */
 function enterSite() {
   const input = document.getElementById('nickname-input');
   if(input.value.trim()) {
     myName = input.value.trim();
   }
   
+  // ▼▼▼ [핵심 수정] 아래 내용들이 추가되어야 데이터가 보입니다! ▼▼▼
+  
+  // 1. 프로필 이미지와 소개글 연결
+  document.getElementById("profile-img").src = currentMember.img;
+  document.getElementById("profile-desc").innerText = currentMember.desc;
+  
+  // 2. BGM 제목 표시 및 오디오 소스 연결
+  document.getElementById("bgm-title").innerText = "♬ " + currentMember.bgm.title;
+  const bgm = document.getElementById("bgm");
+  bgm.src = currentMember.bgm.src; // 오디오 파일 경로 설정 필수!
+
+  // 3. 사진첩 목록 렌더링 실행
+  renderPhotos(currentMember.photos);
+
+  // ▲▲▲ [수정 끝] ▲▲▲
+
   // 입장 모달 숨기기
   document.getElementById('entry-modal').style.display = 'none';
-  // 메인 화면 보여주기
+  // 메인 화면 표시
   document.getElementById('main-wrapper').style.visibility = 'visible';
   
-  // ★ 여기서 BGM 재생 (사용자 클릭 직후라 가능) ★
-  const bgm = document.getElementById("bgm");
+  // BGM 재생 시도 (소스가 연결되었으므로 이제 소리가 날 거예요)
   bgm.volume = 0.5;
   bgm.play().catch(error => {
-    console.log("브라우저 정책상 재생 실패 시 클릭 유도 필요");
+    console.log("Auto-play blocked by browser policy");
   });
 
   // 스케일링 및 도토리 스케줄 시작
@@ -559,7 +594,8 @@ function triggerIlchonRequest() {
 }
 
 function acceptIlchon() {
-  alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
+  // ★ 알림창도 showAlert로 변경
+  showAlert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
   
   const select = document.getElementById('ilchon-status-bar');
@@ -604,15 +640,14 @@ function foundAcorn(id) {
       if(!bgm.paused) bgm.volume = 1.0; 
     }, 300);
   } else {
-    alert(`도토己I를 찾았다! (${foundCount}/3)\n남은 도토己I가 나올 때까지 기다려보세요!`);
+    // ★ 알림창도 showAlert로 변경
+    showAlert(`도토己I를 찾았다! (${foundCount}/3)\n남은 도토己I가 나올 때까지 기다려보세요!`);
   }
 }
 
-// ★ 탭 전환 함수 (홈, 방명록, 사진첩) ★
 function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
   
-  // 각 탭의 display 설정 (flex로 통일하여 스크롤 문제 해결)
   document.getElementById('home').style.display = (name==='home') ? 'flex' : 'none';
   document.getElementById('guestbook').style.display = (name==='guestbook') ? 'flex' : 'none';
   document.getElementById('photos').style.display = (name==='photos') ? 'flex' : 'none';
@@ -1040,22 +1075,13 @@ Coldy한 나
 const currentMember = members[Math.floor(Math.random() * members.length)];
 
 window.onload = () => {
-  document.getElementById("profile-img").src = currentMember.img;
+  // ★ 페이지 로드 시에는 오직 기본 데이터만 세팅 (모달, 음악, 사진 로딩 금지) ★
+  // document.getElementById("profile-img").src = currentMember.img; <-- 삭제됨
+  // renderPhotos(currentMember.photos); <-- 삭제됨
+  // 위 작업들은 enterSite()에서 수행해야 흐름이 맞습니다.
+  
+  // 하지만 사용자 편의를 위해 "입장 전"에도 이름은 세팅해두면 좋습니다.
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
-  
-  if(document.getElementById("profile-desc")) {
-    document.getElementById("profile-desc").innerText = currentMember.desc || "안녕하세요!";
-  }
-  if(document.getElementById("today-mood")) {
-    document.getElementById("today-mood").innerText = currentMember.mood || "행복";
-  }
-  
-  const bgm = document.getElementById("bgm");
-  bgm.src = currentMember.bgm.src;
-  document.getElementById("bgm-title").innerHTML = 
-    "<marquee scrollamount='3'> ☆-..- 🎵 BGM: " + currentMember.bgm.title + " -..-☆ </marquee>";
-
-  renderPhotos(currentMember.photos);
 };
 
 function renderPhotos(photoList) {
@@ -1208,7 +1234,7 @@ function postMsg() {
       if (text.includes("데이트")) { document.getElementById(id).innerText = `ㄴ 안건호: 데이트? 피아노 학원에서 만날래? ㅋㅋㅋ`; return; }
       if (text.includes("바보")) { document.getElementById(id).innerText = `ㄴ 안건호: 바다의 보물?ㅋ 응 반사😜`; return; }
     }
-
+    
     // 4. 일반 분류
     // 3-1. "뭐해?" 질문 감지
     if (text.includes("뭐해") || text.includes("머해") || text.includes("머행") || text.includes("모해") || text.includes("무행") || text.includes("뭐함") || text.includes("뭐행") || text.includes("머하") || text.includes("모함") || text.includes("뭐하")) {
