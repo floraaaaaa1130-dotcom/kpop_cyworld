@@ -79,14 +79,6 @@ body {
   width: 80px;
 }
 
-/* ===== 왼쪽 프로필 영역 ===== */
-.profile {
-  width:28%; border-right:1px dashed #ccc;
-  padding-right:15px; text-align:center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 /* ★ TODAY IS 감성 박스 ★ */
 .today-box {
   width: 100%;
@@ -97,22 +89,27 @@ body {
   text-align: left;
   font-size: 12px;
   background: #fff;
+  flex-shrink: 0; /* 크기 고정 */
 }
 .today-label { color: #298d9e; font-weight: bold; margin-right: 5px; }
 .today-icon { border: 1px solid #ddd; padding: 1px 4px; margin-right: 3px; cursor: pointer; border-radius: 2px; }
 
-.profile-img { width:100%; margin-bottom:10px; border: 1px solid #ccc; }
+.profile-img { width:100%; margin-bottom:10px; border: 1px solid #ccc; flex-shrink: 0; }
 
-/* ★ 프로필 소개글 영역 ★ */
+/* ★ 프로필 소개글 영역 (최대 높이 지정) ★ */
 .profile-desc {
   width: 100%;
   text-align: left;
   font-size: 12px;
   line-height: 1.4;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   color: #333;
   padding: 0 2px;
-  white-space: pre-wrap; /* 줄바꿈 적용 */
+  white-space: pre-wrap; 
+  /* 너무 길어지면 박스 안에서 스크롤되도록 */
+  max-height: 120px; 
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 /* ★ 일촌 파도타기 드롭다운 ★ */
@@ -137,6 +134,7 @@ body {
   margin-top: 5px;
   letter-spacing: -1px;
   width: 100%;
+  flex-shrink: 0;
 }
 .content-area {
   flex-grow: 1;
@@ -835,3 +833,4 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
