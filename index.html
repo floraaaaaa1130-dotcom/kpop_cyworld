@@ -529,7 +529,11 @@ function enterSite() {
   document.getElementById("profile-desc").innerText = currentMember.desc;
   
   // 2. BGM 제목 표시 및 오디오 소스 연결
-  document.getElementById("bgm-title").innerText = "♬ " + currentMember.bgm.title;
+  document.getElementById("bgm-title").innerHTML = `
+  <marquee scrollamount="3" style="width:100%">
+    ‥‥*☆* ♬ ${currentMember.bgm.title} *☆*‥‥
+  </marquee>
+`;
   const bgm = document.getElementById("bgm");
   bgm.src = currentMember.bgm.src; // 오디오 파일 경로 설정 필수!
 
@@ -1259,3 +1263,4 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
