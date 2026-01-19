@@ -1154,10 +1154,10 @@ function postMsg() {
     if (text.includes("뭐해") || text.includes("머해") || text.includes("머행") || text.includes("모해") || text.includes("무행") || text.includes("뭐함") || text.includes("뭐행") || text.includes("머하") || text.includes("모함") || text.includes("뭐하")) {
        type = "doing"; 
     }
-    else if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
-    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
+    else if (text.includes("소문") || text.includes("들었어") || text.includes("루머") || text.includes("실망") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
+    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") ||  text.includes("우정") ||  text.includes("절친") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
     else if (text.includes("사랑") || text.includes("좋아") || text.includes("조아") || text.includes("사커") || text.includes("남친") || text.includes("죠아") || text.includes("사귀자") || text.includes("보고시") || text.includes("보고싶") || text.includes("보구싶") ||text.includes("보구시") || text.includes("내꺼") || text.includes("결혼")) type = "love";
-    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("지쳐") || text.includes("울고") || text.includes("흑흑") || text.includes("엉엉") || text.includes("우울") || text.includes("눈물")) type = "sad";
+    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("슬픔") || text.includes("지쳐") || text.includes("울고") || text.includes("흑흑") || text.includes("엉엉") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
     const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
@@ -1173,6 +1173,7 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
