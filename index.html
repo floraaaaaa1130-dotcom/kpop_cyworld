@@ -42,6 +42,8 @@ body {
   position: relative;
   flex-shrink: 0; 
   transform-origin: top center;
+  /* 처음에는 숨겨둠 (인트로 팝업 후 등장) */
+  visibility: hidden; 
 }
 
 .white-box {
@@ -287,6 +289,28 @@ input.comment-input {
 .hidden-acorn:hover { transform: scale(1.2); opacity: 1; }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
+/* ★ 입장 전용 모달 (Intro) ★ */
+#entry-modal {
+  display: flex; position: fixed; top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.8); z-index: 10000;
+  justify-content: center; align-items: center;
+  flex-direction: column;
+}
+.entry-box {
+  background: #f1f1f1; border: 2px solid #ff6600; padding: 30px;
+  text-align: center; border-radius: 10px; width: 300px;
+  box-shadow: 0 0 20px rgba(255,102,0,0.5);
+}
+.entry-input {
+  width: 100%; padding: 8px; margin: 15px 0;
+  border: 1px solid #999; font-family: 'Umdot15'; text-align: center;
+}
+.entry-btn {
+  background: #ff6600; color: white; border: 1px solid #cc5200;
+  padding: 8px 20px; cursor: pointer; font-weight: bold; width: 100%;
+}
+
+/* 일반 모달 */
 .modal-overlay {
   display: none; position: fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.5); z-index: 9999;
@@ -314,6 +338,16 @@ input.comment-input {
 </head>
 
 <body>
+
+<div id="entry-modal">
+  <div class="entry-box">
+    <h2 style="color:#ff6600; margin-top:0;">Cyworld</h2>
+    <p>싸이월드에 ߐ신 것을 환영합Ꮣㅣ⊂ㅏ!</p>
+    <p style="font-size:12px; color:#666;">⋌˫용ṑㅏ실 닉네임을 입력ṑΗ㈜パㅔ요.</p>
+    <input type="text" id="nickname-input" class="entry-input" placeholder="닉네임 입력" onkeydown="if(event.key==='Enter') enterSite()">
+    <button class="entry-btn" onclick="enterSite()">입ጉ6㉭ドㄱI ♬</button>
+  </div>
+</div>
 
 <div id="reward-modal" class="modal-overlay">
   <div class="modal-content">
@@ -404,7 +438,7 @@ input.comment-input {
             키워드별 랜덤 답글을 준비했어요.<br>
             멤버별 최소 20개 이상, 전부 모아보세요♡<br>
             <br>
-            <span style="color:#ff6600; background:#fff; padding:2px;">[ 키워드 힌트: 뭐해? / 사랑 / 슬픔 / 우정 / 소문 / 생일 ]</span><br><br>
+            <span style="color:#ff6600; background:#fff; padding:2px;">[ 키워드 힌트: ㅁㅎ? / 사랑 / 슬픔 / 우정 / 소문 / 생일 ]</span><br><br>
             ⒧ 특정 멤버만 반응하는 이스터에그 키워드도 있습니다!<br>
             ⑵ 방명록을 <b>10개</b> 이상 남기면 이벤트가 발생할지도...🤫
           </div>
@@ -459,6 +493,30 @@ let guestbookCount = 0;
 
 function closeModal(id) {
   document.getElementById(id).style.display = 'none';
+}
+
+/* ★ 1. 입장하기 기능 (BGM 자동재생 트리거) ★ */
+function enterSite() {
+  const input = document.getElementById('nickname-input');
+  if(input.value.trim()) {
+    myName = input.value.trim();
+  }
+  
+  // 입장 모달 숨기기
+  document.getElementById('entry-modal').style.display = 'none';
+  // 메인 화면 보여주기
+  document.getElementById('main-wrapper').style.visibility = 'visible';
+  
+  // ★ 여기서 BGM 재생 (사용자 클릭 직후라 가능) ★
+  const bgm = document.getElementById("bgm");
+  bgm.volume = 0.5;
+  bgm.play().catch(error => {
+    console.log("브라우저 정책상 재생 실패 시 클릭 유도 필요");
+  });
+
+  // 스케일링 및 도토리 스케줄 시작
+  adjustScale();
+  scheduleAcorns();
 }
 
 /* ★ 모바일 자동 스케일링 ★ */
@@ -920,9 +978,6 @@ Coldy한 나
 const currentMember = members[Math.floor(Math.random() * members.length)];
 
 window.onload = () => {
-  const inputName = prompt("미니홈피에서 사용할 닉네임을 알려주세요!", "익명");
-  if(inputName) myName = inputName;
-
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
   
@@ -939,8 +994,6 @@ window.onload = () => {
     "<marquee scrollamount='3'> ☆-..- 🎵 BGM: " + currentMember.bgm.title + " -..-☆ </marquee>";
 
   renderPhotos(currentMember.photos);
-  scheduleAcorns();
-  adjustScale(); // 로드시 스케일링 실행
 };
 
 function renderPhotos(photoList) {
@@ -1031,7 +1084,8 @@ function postMsg() {
     }
 
     // 2. 생일 축하
-    if (text.includes("생일축하")) {
+    if (text.includes("생일축하") || text.includes("생축") || text.includes("생일추카"))
+    {
       let msg = "오 고마워 ㅋㅋ";
       if (currentMember.name === "박원빈") msg = "어.. 고맙디.. 진짜 감동이다ㅠㅠ";
       else if (currentMember.name === "송은석") msg = "돌멩이의 탄생일을 축하해줘서 땡큐.";
