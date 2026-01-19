@@ -7,11 +7,11 @@
 
 <style>
 @font-face {
-  font-family: 'GalmuriCondensed';
-  src: url('fonts/GalmuriCondensed.woff2') format('woff2');
+  font-family: 'Umdot15';
+  src: url('fonts/Umdot15.woff2') format('woff2');
 }
 * {
-  font-family: 'GalmuriCondensed', monospace;
+  font-family: 'Umdot15', monospace;
   box-sizing: border-box;
 }
 :root {
@@ -97,29 +97,60 @@ body {
   letter-spacing: -1px;
 }
 .content-area {
-  flex-grow:1;
-  overflow-y:auto;
-  padding-right: 5px;
+  flex-grow: 1;
+  display: flex;           /* 내용을 Flex로 배치 */
+  flex-direction: column;  /* 세로 정렬 */
+  overflow: hidden;        /* 전체 스크롤 방지 */
+  height: 100%;
+}
+/* 방명록 헤더 */
+.content-header {
+  border-bottom:1px solid #ccc; 
+  padding-bottom:5px; 
+  margin-bottom:10px; 
+  color:#3b5998; 
+  font-weight:bold;
+  flex-shrink: 0; /* 고정 */
+}
+
+/* ★★★ 스크롤되는 목록 영역 (여기가 핵심!) ★★★ */
+.scroll-list {
+  flex-grow: 1;         /* 남은 공간 꽉 채우기 */
+  overflow-y: auto;     /* 여기만 스크롤 생김 */
+  padding-right: 5px;   /* 스크롤바 공간 */
+  
+  /* 스크롤바 디자인 */
   scrollbar-width: thin;
   scrollbar-color: #8cc6d1 #f1f1f1;
 }
-.content-area::-webkit-scrollbar { width: 8px; }
-.content-area::-webkit-scrollbar-thumb { background: #8cc6d1; border-radius: 4px; }
-.content-area::-webkit-scrollbar-track { background: #f1f1f1; }
+.scroll-list::-webkit-scrollbar { width: 8px; }
+.scroll-list::-webkit-scrollbar-thumb { background: #8cc6d1; border-radius: 4px; }
+.scroll-list::-webkit-scrollbar-track { background: #f1f1f1; }
 
-/* ===== 방명록 ===== */
+/* ★★★ 입력창 영역 (하단 고정) ★★★ */
+.input-wrapper {
+  flex-shrink: 0;       /* 크기 줄어들지 않음 (고정) */
+  margin-top: 10px;
+  border-top: 2px solid #eee;
+  padding-top: 10px;
+  background: white;
+}
+
+/* 방명록 엔트리 (폰트 사이즈 축소) */
 .guestbook-entry {
   background:#f6f6f6;
-  padding:10px;
-  margin-bottom:12px;
+  padding: 8px 10px; /* 패딩도 살짝 줄임 */
+  margin-bottom:10px;
   border-radius:5px;
   border: 1px dotted #ccc;
+  font-size: 13px; /* ★ 글자 크기 줄임 ★ */
 }
 .ai-reply {
   color:#ff6600;
-  margin-top:6px;
+  margin-top:4px;
   border-top:1px dotted #ccc;
   padding-top:4px;
+  font-size: 12px; /* ★ 답글은 더 작게 ★ */
 }
 textarea {
   width:100%;
@@ -127,7 +158,7 @@ textarea {
   border: 1px solid #ccc;
   padding: 5px;
   margin-top: 10px;
-  font-family: 'GalmuriCondensed', monospace;
+  font-family: 'Umdot15', monospace;
 }
 button {
   float:right;
@@ -136,7 +167,7 @@ button {
   border: 1px solid black;
   background: white;
   padding: 3px 10px;
-  font-family: 'GalmuriCondensed', monospace;
+  font-family: 'Umdot15', monospace;
   box-shadow: 1px 1px 0px #999;
 }
 button:active { box-shadow: none; transform: translate(1px, 1px); }
@@ -156,7 +187,7 @@ button:active { box-shadow: none; transform: translate(1px, 1px); }
 .comment { border-top:1px dotted #ccc; padding-top:4px; }
 input.comment-input {
   width:100%; margin-top:6px; border: 1px solid #ccc; padding: 3px;
-  font-family: 'GalmuriCondensed', monospace;
+  font-family: 'Umdot15', monospace;
 }
 
 /* ===== 숨겨진 도토리 ===== */
@@ -526,7 +557,7 @@ window.onload = () => {
   const bgm = document.getElementById("bgm");
   bgm.src = currentMember.bgm.src;
   document.getElementById("bgm-title").innerHTML = 
-    "<marquee scrollamount='3'>🎵 BGM: " + currentMember.bgm.title + "</marquee>";
+    "<marquee scrollamount='3'> ☆-..- 🎵 BGM: " + currentMember.bgm.title + " -..-☆ </marquee>";
 
   renderPhotos(currentMember.photos);
   scheduleAcorns();
@@ -681,6 +712,7 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
