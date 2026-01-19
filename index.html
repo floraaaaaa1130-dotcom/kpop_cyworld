@@ -79,12 +79,53 @@ body {
   width: 80px;
 }
 
-/* ===== 내부 요소 ===== */
+/* ===== 왼쪽 프로필 영역 (수정됨) ===== */
 .profile {
   width:28%; border-right:1px dashed #ccc;
   padding-right:15px; text-align:center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+/* ★ TODAY IS 감성 박스 ★ */
+.today-box {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 12px;
+  background: #fff;
+}
+.today-label { color: #298d9e; font-weight: bold; margin-right: 5px; }
+.today-icon { border: 1px solid #ddd; padding: 1px 4px; margin-right: 3px; cursor: pointer; border-radius: 2px; }
+
 .profile-img { width:100%; margin-bottom:10px; border: 1px solid #ccc; }
+
+/* ★ 프로필 소개글 영역 ★ */
+.profile-desc {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  color: #333;
+  padding: 0 2px;
+  white-space: pre-wrap; /* 줄바꿈 적용 */
+}
+
+/* ★ 일촌 파도타기 드롭다운 ★ */
+.ilchon-select {
+  width: 100%;
+  margin-top: 10px;
+  padding: 3px;
+  font-family: 'Umdot15', monospace;
+  font-size: 11px;
+  border: 1px solid #ccc;
+  color: #666;
+}
+
 .main-content {
   width:72%; padding-left:20px;
   display:flex; flex-direction:column;
@@ -95,31 +136,21 @@ body {
   color: #3b5998;
   margin-top: 5px;
   letter-spacing: -1px;
+  width: 100%;
 }
 .content-area {
   flex-grow: 1;
-  display: flex;           /* 내용을 Flex로 배치 */
-  flex-direction: column;  /* 세로 정렬 */
-  overflow: hidden;        /* 전체 스크롤 방지 */
+  display: flex;           
+  flex-direction: column;  
+  overflow: hidden;        
   height: 100%;
 }
-/* 방명록 헤더 */
-.content-header {
-  border-bottom:1px solid #ccc; 
-  padding-bottom:5px; 
-  margin-bottom:10px; 
-  color:#3b5998; 
-  font-weight:bold;
-  flex-shrink: 0; /* 고정 */
-}
 
-/* ★★★ 스크롤되는 목록 영역 (여기가 핵심!) ★★★ */
+/* 스크롤바 디자인 */
 .scroll-list {
-  flex-grow: 1;         /* 남은 공간 꽉 채우기 */
-  overflow-y: auto;     /* 여기만 스크롤 생김 */
-  padding-right: 5px;   /* 스크롤바 공간 */
-  
-  /* 스크롤바 디자인 */
+  flex-grow: 1;           
+  overflow-y: auto;       
+  padding-right: 5px;     
   scrollbar-width: thin;
   scrollbar-color: #8cc6d1 #f1f1f1;
 }
@@ -127,30 +158,28 @@ body {
 .scroll-list::-webkit-scrollbar-thumb { background: #8cc6d1; border-radius: 4px; }
 .scroll-list::-webkit-scrollbar-track { background: #f1f1f1; }
 
-/* ★★★ 입력창 영역 (하단 고정) ★★★ */
 .input-wrapper {
-  flex-shrink: 0;       /* 크기 줄어들지 않음 (고정) */
+  flex-shrink: 0;       
   margin-top: 10px;
   border-top: 2px solid #eee;
   padding-top: 10px;
   background: white;
 }
 
-/* 방명록 엔트리 (폰트 사이즈 축소) */
 .guestbook-entry {
   background:#f6f6f6;
-  padding: 8px 10px; /* 패딩도 살짝 줄임 */
+  padding: 8px 10px; 
   margin-bottom:10px;
   border-radius:5px;
   border: 1px dotted #ccc;
-  font-size: 13px; /* ★ 글자 크기 줄임 ★ */
+  font-size: 13px; 
 }
 .ai-reply {
   color:#ff6600;
   margin-top:4px;
   border-top:1px dotted #ccc;
   padding-top:4px;
-  font-size: 12px; /* ★ 답글은 더 작게 ★ */
+  font-size: 12px; 
 }
 textarea {
   width:100%;
@@ -172,7 +201,6 @@ button {
 }
 button:active { box-shadow: none; transform: translate(1px, 1px); }
 
-/* ===== 사진첩 ===== */
 .photo-post {
   background:var(--bg-gray);
   padding:10px;
@@ -190,7 +218,6 @@ input.comment-input {
   font-family: 'Umdot15', monospace;
 }
 
-/* ===== 숨겨진 도토己I ===== */
 .hidden-acorn {
   position: absolute;
   font-size: 20px;
@@ -204,7 +231,6 @@ input.comment-input {
 .hidden-acorn:hover { transform: scale(1.2); opacity: 1; }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-/* ===== 팝업(모달) ===== */
 .modal-overlay {
   display: none; position: fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.5); z-index: 9999;
@@ -353,7 +379,20 @@ function acceptIlchon() {
   alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
 }
-
+  
+// ★ 일촌 수락 시 드롭다운 변경 기능 추가 ★
+function acceptIlchon() {
+  alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
+  closeModal('ilchon-modal');
+  
+  // 드롭다운 업데이트
+  const select = document.getElementById('ilchon-status-bar');
+  select.innerHTML = `<option>★ 일촌 (${myName})</option>`;
+  select.style.color = "blue";
+  select.style.fontWeight = "bold";
+  select.disabled = false; // 이제 선택 가능하게 변경
+}
+  
 /* ===== 2. 도토己I 찾기 ===== */
 let foundCount = 0;
 
@@ -572,6 +611,10 @@ window.onload = () => {
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
   
+  // ★ 추가된 프로필 정보 렌더링 ★
+  document.getElementById("profile-desc").innerText = currentMember.desc || "안녕하세요!";
+  document.getElementById("today-mood").innerText = currentMember.mood || "행복";
+  
   const bgm = document.getElementById("bgm");
   bgm.src = currentMember.bgm.src;
   document.getElementById("bgm-title").innerHTML = 
@@ -730,6 +773,7 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
