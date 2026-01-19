@@ -79,6 +79,17 @@ body {
   width: 80px;
 }
 
+/* ===== 왼쪽 프로필 영역 (크기 문제 해결) ===== */
+.profile {
+  width:28%; border-right:1px dashed #ccc;
+  padding-right:15px; text-align:center;
+  /* ★ Flex 설정 추가: 세로 정렬 및 높이 꽉 채우기 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%; 
+}
+
 /* ★ TODAY IS 감성 박스 ★ */
 .today-box {
   width: 100%;
@@ -89,14 +100,14 @@ body {
   text-align: left;
   font-size: 12px;
   background: #fff;
-  flex-shrink: 0; /* 크기 고정 */
+  flex-shrink: 0; 
 }
 .today-label { color: #298d9e; font-weight: bold; margin-right: 5px; }
 .today-icon { border: 1px solid #ddd; padding: 1px 4px; margin-right: 3px; cursor: pointer; border-radius: 2px; }
 
 .profile-img { width:100%; margin-bottom:10px; border: 1px solid #ccc; flex-shrink: 0; }
 
-/* ★ 프로필 소개글 영역 (최대 높이 지정) ★ */
+/* ★ 프로필 소개글 영역 (높이 제한 수정) ★ */
 .profile-desc {
   width: 100%;
   text-align: left;
@@ -104,11 +115,13 @@ body {
   line-height: 1.4;
   margin-bottom: 10px;
   color: #333;
-  padding: 0 2px;
+  padding: 5px;
+  border: 1px dotted #ccc; /* 영역 구분선 추가 */
+  background: #f9f9f9;
   white-space: pre-wrap; 
-  /* 너무 길어지면 박스 안에서 스크롤되도록 */
-  max-height: 120px; 
-  overflow-y: auto;
+  /* 높이 제한을 80px로 줄여서 너무 커지지 않게 함 */
+  max-height: 80px; 
+  overflow-y: auto; /* 내용 넘치면 스크롤 */
   scrollbar-width: thin;
 }
 
@@ -136,6 +149,8 @@ body {
   width: 100%;
   flex-shrink: 0;
 }
+
+/* ★ 여기가 중요! display:flex 필수 ★ */
 .content-area {
   flex-grow: 1;
   display: flex;           
@@ -319,11 +334,11 @@ input.comment-input {
         <option>파도타기..</option>
       </select>
       
-      <div style="margin-top:20px; font-size:12px; color:#999;">
+      <div style="margin-top:auto; padding-top: 15px; font-size:12px; color:#999; padding-bottom: 5px;">
         TODAY <span style="color:red">281</span> | TOTAL 12,345
-      </div>
-      <div style="margin-top:5px; font-size:11px; color:#3b5998;">
-        찾은 도토己I: <span id="acorn-count">0</span>/3
+        <div style="margin-top:5px; font-size:11px; color:#3b5998;">
+          찾은 도토己I: <span id="acorn-count">0</span>/3
+        </div>
       </div>
     </div>
 
@@ -389,7 +404,6 @@ function triggerIlchonRequest() {
   document.getElementById('ilchon-modal').style.display = 'flex';
 }
 
-// ★ 중복 함수 제거 및 기능 통합 ★
 function acceptIlchon() {
   alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
@@ -441,10 +455,14 @@ function foundAcorn(id) {
   }
 }
 
+// ★ 사진첩 스크롤 문제 해결 (block -> flex) ★
 function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('guestbook').style.display = name==='guestbook'?'block':'none';
-  document.getElementById('photos').style.display = name==='photos'?'block':'none';
+  
+  // flex로 변경해야 스크롤이 정상 작동합니다.
+  document.getElementById('guestbook').style.display = (name==='guestbook') ? 'flex' : 'none';
+  document.getElementById('photos').style.display = (name==='photos') ? 'flex' : 'none';
+  
   document.getElementById('tab-' + name).classList.add('active');
 }
 
@@ -667,7 +685,6 @@ window.onload = () => {
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
   
-  // ★ 추가된 프로필 정보 렌더링 (이제 태그가 있으니 에러가 나지 않습니다!) ★
   if(document.getElementById("profile-desc")) {
     document.getElementById("profile-desc").innerText = currentMember.desc || "안녕하세요!";
   }
@@ -833,4 +850,3 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
