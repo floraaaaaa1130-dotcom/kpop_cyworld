@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>☆-..- 2010년의 어느 날 -..-☆</title>
+<title>☆-..- 2005년의 어느 날 -..-☆</title>
 
 <style>
 @font-face {
@@ -42,7 +42,6 @@ body {
   position: relative;
   flex-shrink: 0; 
   transform-origin: top center;
-  /* 처음에는 숨겨둠 (인트로 팝업 후 등장) */
   visibility: hidden; 
 }
 
@@ -312,7 +311,7 @@ input.comment-input {
 
 /* ★ 일반 알림 모달 (alert 대체용) ★ */
 #alert-modal { display: none; } /* 초기엔 숨김 */
-  
+
 .modal-overlay {
   display: none; position: fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.5); z-index: 9999;
@@ -347,7 +346,20 @@ input.comment-input {
     <p>환영합Ꮣㅣ⊂ㅏ!</p>
     <p style="font-size:12px; color:#666;">⋌˫용ṑㅏ실 닉네임을 입력ṑΗ㈜パㅔ요.</p>
     <input type="text" id="nickname-input" class="entry-input" placeholder="닉네임 입력" onkeydown="if(event.key==='Enter') enterSite()">
-    <button class="entry-btn" onclick="enterSite()">입ጉ6㉭ドㄱI ♬</button>
+    <button class="entry-btn" onclick="enterSite()">입구6㉭ドㄱI ♬</button>
+  </div>
+</div>
+
+<div id="alert-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span>알림</span>
+      <span style="cursor:pointer" onclick="closeModal('alert-modal')">X</span>
+    </div>
+    <div class="modal-body">
+      <p id="alert-msg" style="margin: 20px 0; font-size: 14px;"></p>
+      <button class="modal-btn" onclick="closeModal('alert-modal')">확인</button>
+    </div>
   </div>
 </div>
 
@@ -479,8 +491,8 @@ input.comment-input {
 
   <div class="menu-container">
     <div id="tab-home" class="menu-tab active" onclick="showTab('home')">홈</div>
-    <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">프로필</div>
-    <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">다이어리</div>
+    <div class="menu-tab" onclick="showAlert('준비중입Ꮮㅣ㉰')">프로필</div>
+    <div class="menu-tab" onclick="showAlert('준비중입Ꮮㅣ㉰')">다이어리</div>
     <div id="tab-photos" class="menu-tab" onclick="showTab('photos')">사진첩</div>
     <div id="tab-guestbook" class="menu-tab" onclick="showTab('guestbook')">방명록</div>
   </div>
@@ -489,7 +501,6 @@ input.comment-input {
 <audio id="bgm" loop></audio>
   
 <script>
-/* ★ 0. 초기 설정 ★ */
 let myName = "익명";
 let guestbookCount = 0; 
 
@@ -497,37 +508,30 @@ function closeModal(id) {
   document.getElementById(id).style.display = 'none';
 }
 
-  /* ★ 커스텀 알림창 함수 (alert 대체) ★ */
 function showAlert(msg) {
   document.getElementById('alert-msg').innerText = msg;
   document.getElementById('alert-modal').style.display = 'flex';
 }
 
-/* ★ 1. 입장하기 기능 (BGM 자동재생 트리거) ★ */
 function enterSite() {
   const input = document.getElementById('nickname-input');
   if(input.value.trim()) {
     myName = input.value.trim();
   }
   
-  // 입장 모달 숨기기
   document.getElementById('entry-modal').style.display = 'none';
-  // 메인 화면 보여주기
   document.getElementById('main-wrapper').style.visibility = 'visible';
   
-  // ★ 여기서 BGM 재생 (사용자 클릭 직후라 가능) ★
   const bgm = document.getElementById("bgm");
   bgm.volume = 0.5;
   bgm.play().catch(error => {
-    console.log("브라우저 정책상 재생 실패 시 클릭 유도 필요");
+    console.log("재생 실패");
   });
 
-  // 스케일링 및 도토리 스케줄 시작
   adjustScale();
   scheduleAcorns();
 }
 
-/* ★ 모바일 자동 스케일링 ★ */
 function adjustScale() {
   const wrapper = document.getElementById('main-wrapper');
   const winWidth = window.innerWidth;
@@ -545,7 +549,6 @@ function adjustScale() {
 
 window.addEventListener('resize', adjustScale);
 
-/* ===== 1. 자동 일촌 신청 메시지 ===== */
 const ilchonMessages = {
   "박원빈": "저기.. 우리.. 친해질래..? (부끄)",
   "이소희": "야 너 좀 재밌다? 일촌 맺자 ㅋㅋ 노래 불러줄게",
@@ -567,7 +570,6 @@ function triggerIlchonRequest() {
 }
 
 function acceptIlchon() {
-  // ★ 여기도 alert 대신 showAlert 사용
   showAlert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
   
@@ -580,7 +582,6 @@ function acceptIlchon() {
   }
 }
   
-/* ===== 2. 도토己I 찾기 ===== */
 let foundCount = 0;
 
 function scheduleAcorns() {
@@ -613,16 +614,13 @@ function foundAcorn(id) {
       if(!bgm.paused) bgm.volume = 1.0; 
     }, 300);
   } else {
-    // ★ 여기도 alert 대신 showAlert 사용
     showAlert(`도토己I를 찾았다! (${foundCount}/3)\n남은 도토己I가 나올 때까지 기다려보세요!`);
   }
 }
 
-// ★ 탭 전환 함수 (홈, 방명록, 사진첩) ★
 function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
   
-  // 각 탭의 display 설정 (flex로 통일하여 스크롤 문제 해결)
   document.getElementById('home').style.display = (name==='home') ? 'flex' : 'none';
   document.getElementById('guestbook').style.display = (name==='guestbook') ? 'flex' : 'none';
   document.getElementById('photos').style.display = (name==='photos') ? 'flex' : 'none';
@@ -630,7 +628,6 @@ function showTab(name){
   document.getElementById('tab-' + name).classList.add('active');
 }
 
-/* ===== 3. 성격별 말투 ===== */
 const replyTemplates = {
   isfp: {
     normal: ["ㅇ ㅏ.. 안녕? ㅎㅎ", "왔나..", "글 남겨줘서 고맙디..///", "오.. 나도 답방해주까..?", "처음 보네.. 반갑다..!"],
@@ -777,7 +774,7 @@ const members = [
   },
   {
     name: "백준혁",
-    desc: "친해지고싶으면 일촌거셈",
+    desc: "내 패션 쩔지ㅋ\n친해지고싶음 일촌 신청 ㄱㄱ",
     mood: "간지",
     img: "jun_profile.png",
     bgm: { title: "프리스타일 - Y(Please Tell Me Why)", src: "bgm_eunseok.mp3" },
@@ -1050,6 +1047,9 @@ Coldy한 나
 const currentMember = members[Math.floor(Math.random() * members.length)];
 
 window.onload = () => {
+  const inputName = prompt("미니홈피에서 사용할 닉네임을 알려주세요!", "익명");
+  if(inputName) myName = inputName;
+
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
   
@@ -1066,6 +1066,8 @@ window.onload = () => {
     "<marquee scrollamount='3'> ☆-..- 🎵 BGM: " + currentMember.bgm.title + " -..-☆ </marquee>";
 
   renderPhotos(currentMember.photos);
+  scheduleAcorns();
+  adjustScale(); // 로드시 스케일링 실행
 };
 
 function renderPhotos(photoList) {
@@ -1138,8 +1140,8 @@ function postMsg() {
 
     // 1. 여친/짝사랑 질문
     if (
-      text.includes("여친있") || text.includes("여자친구있") || text.includes("여친잇") || text.includes("여자친구잇") || text.includes("좋아하는사람있") || 
-      text.includes("솔로") || text.includes("애인있") || text.includes("사귀는")
+      text.includes("여친있") || text.includes("여자친구있") || text.includes("좋아하는사람있") || 
+      text.includes("솔로") || text.includes("사귀는")
     ) {
       let loveMsg = "";
       if (currentMember.name === "박원빈") loveMsg = "좋아하는 사람은 있다..///";
@@ -1156,8 +1158,7 @@ function postMsg() {
     }
 
     // 2. 생일 축하
-    if (text.includes("생일축하") || text.includes("생축") || text.includes("생일추카"))
-    {
+    if (text.includes("생일축하")) {
       let msg = "오 고마워 ㅋㅋ";
       if (currentMember.name === "박원빈") msg = "어.. 고맙디.. 진짜 감동이다ㅠㅠ";
       else if (currentMember.name === "송은석") msg = "돌멩이의 탄생일을 축하해줘서 땡큐.";
@@ -1180,7 +1181,6 @@ function postMsg() {
     }
     if (currentMember.name === "송은석") {
       if (text.includes("돌멩이")) { document.getElementById(id).innerText = `ㄴ 송은석: 굴러가유~ 데굴데굴`; return; }
-      if (text.includes("돌자")) { document.getElementById(id).innerText = `ㄴ 송은석: 그게 뭔 뜻인데? 돌의 왕자? 작명센스 굿이네 ㅋ`; return; }
       if (text.includes("얼굴") || text.includes("잘생")) { document.getElementById(id).innerText = `ㄴ 송은석: 신이 나를 만들 때.. 실수를 안 하셨지. 훗.`; return; }
       if (text.includes("잠") || text.includes("잘자")) { document.getElementById(id).innerText = `ㄴ 송은석: 너도 잘자 악몽 꾸지 말고`; return; }
       if (text.includes("개그해줘") || text.includes("아재개그")) { document.getElementById(id).innerText = `ㄴ 송은석: 중국집의 현재 시각은? ...............짜장면 배달시키신 분 ㅋ`; return; }
@@ -1206,10 +1206,9 @@ function postMsg() {
     }
     if (currentMember.name === "리쿠") {
       if (text.includes("おはよう") || text.includes("こんにちは")) { document.getElementById(id).innerText = `ㄴ 리쿠: え！日本語できるの？？ 안뇽ㅎㅎ`; return; }
-      if (text.includes("かわい") || text.includes("카와이") || text.includes("귀여")) { document.getElementById(id).innerText = `ㄴ 리쿠: 진짜??고마워//_// 너두 かわちいだよん~ `; return; }
       if (text.includes("누나")) { document.getElementById(id).innerText = `ㄴ 리쿠: 누나? 나보다 누나야?? 마싯는거 사주면 누나라고 부를게용 헤헤`; return; }
-      if (text.includes("스키") || text.includes("츠키") || text.includes("付き合って") || text.includes("好き")) { document.getElementById(id).innerText = `ㄴ 리쿠: え、미아내.. 나 주니 조아해..ㅠㅠ 그래두 고마워!!`; return; }
-      if (text.includes("애햄") || text.includes("햄햄")) { document.getElementById(id).innerText = `ㄴ 리쿠: 그게모야??햄?먹는고? 햄 조아하징`; return; }
+      if (text.includes("다이스키") || text.includes("好き")) { document.getElementById(id).innerText = `ㄴ 리쿠: え、주니야? 주니면 좋겟당..ㅎㅎ고마워`; return; }
+      if (text.includes("애햄") || text.includes("햄햄")) { document.getElementById(id).innerText = `ㄴ 리쿠: 그게모야??햄?먹는고? 햄햄 조아하징`; return; }
       if (text.includes("모찌")) { document.getElementById(id).innerText = `ㄴ 리쿠: 오! 나 모찌 진짜 조아해 같이 먹으러 갈래??`; return; }
     }
     if (currentMember.name === "안건호") {
@@ -1224,10 +1223,10 @@ function postMsg() {
     if (text.includes("뭐해") || text.includes("머해") || text.includes("머행") || text.includes("모해") || text.includes("무행") || text.includes("뭐함") || text.includes("뭐행") || text.includes("머하") || text.includes("모함") || text.includes("뭐하")) {
        type = "doing"; 
     }
-    else if (text.includes("소문") || text.includes("들었어") || text.includes("루머") || text.includes("실망") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
-    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") ||  text.includes("우정") ||  text.includes("절친") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
-    else if (text.includes("사랑") || text.includes("좋아") || text.includes("잘생") || text.includes("멋져") || text.includes("멋있") || text.includes("반했") || text.includes("조아") || text.includes("사커") || text.includes("남친") || text.includes("죠아") || text.includes("사귀자") || text.includes("보고시") || text.includes("보고싶") || text.includes("보구싶") ||text.includes("보구시") || text.includes("내꺼") || text.includes("결혼")) type = "love";
-    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("슬픔") || text.includes("지쳐") || text.includes("울고") || text.includes("흑흑") || text.includes("엉엉") || text.includes("우울") || text.includes("눈물")) type = "sad";
+    else if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
+    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
+    else if (text.includes("사랑") || text.includes("좋아") || text.includes("사귀자") || text.includes("내꺼") || text.includes("결혼")) type = "love";
+    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
     const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
@@ -1243,21 +1242,3 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
