@@ -796,7 +796,7 @@ const members = [
     img: "so4.png",
     bgm: { title: "MC몽 - 죽을 만큼 아파서 (feat. 멜로우)", src: "bgm_sohee.mp3" },
     replies: replyTemplates.istp_sohee,
-    secretPhoto: "so1.png",
+    secretPhoto: "so3.png",
     photos: [
       { img: "so2.png", text: `난 지금 미쳐가고있다
 이 헤드폰에 내 모든 몸과
@@ -828,7 +828,7 @@ const members = [
 그 남자애랑 잘 지내다가
 내가 좋아지면 그때 와
 `, hearts: 542 },
-      { img: "so3.png", text: `┃  ┣┃-* ☆
+      { img: "so1.png", text: `┃  ┣┃-* ☆
 ┗-*┃┃맘속엔
 네가있는데..
 ┃ ┫┃ -* ☆
@@ -1071,7 +1071,7 @@ function postMsg() {
     // 1. 여친/짝사랑 질문
     if (
       text.includes("여친있") || text.includes("여자친구있") || text.includes("좋아하는사람있") || 
-      text.includes("솔로") || text.includes("사귀는")
+      text.includes("솔로") || text.includes("애인있") || text.includes("사귀는")
     ) {
       let loveMsg = "";
       if (currentMember.name === "박원빈") loveMsg = "좋아하는 사람은 있다..///";
@@ -1173,6 +1173,7 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
