@@ -427,7 +427,7 @@ const members = [
     img: "wonbin_profile.png",
     bgm: { title: "RIIZE - Love 119", src: "bgm_wonbin.mp3" },
     replies: replyTemplates.isfp,
-    secretPhoto: "wonbin.3png",
+    secretPhoto: "wonbin3.png",
     photos: [
       { img: "wonbin_guitar.png", text: "오늘 연습 끝..\n손가락 물집 잡혔다 ㅠㅠ\n그래도 재밌네 역시", hearts: 1004 },
       { img: "wonbin1.png", text: "오늘도 화이팅..!", hearts: 850 }
@@ -438,7 +438,7 @@ const members = [
     img: "riku_profile.png",
     bgm: { title: "NCT WISH - SAIL AWAY", src: "bgm_riku.mp3" },
     replies: replyTemplates.isfp_riku,
-    secretPhoto: "riku1.png",
+    secretPhoto: "riku3.png",
     photos: [
       { img: "riku1.png", text: ">_<", hearts: 808 },
       { img: "riku2.png", text: "시온군이 찍어줘써ㅎㅎ", hearts: 1007 },
@@ -589,7 +589,7 @@ function postMsg() {
   msgInput.value = "";
 
   guestbookCount++;
-  if(guestbookCount === 3) {
+  if(guestbookCount === 10) {
     setTimeout(triggerIlchonRequest, 1500); 
   }
 
@@ -598,8 +598,8 @@ function postMsg() {
     
     // 1. 여친/짝사랑 질문
     if (
-      text.includes("여친있어") || text.includes("여자친구있어") || text.includes("애인있어") || 
-      text.includes("사귀어") || text.includes("사귀는")
+      text.includes("여친있") || text.includes("여자친구있") || text.includes("좋아하는사람있") || 
+      text.includes("솔로") || text.includes("사귀는")
     ) {
       let loveMsg = "";
       if (currentMember.name === "박원빈") loveMsg = "좋아하는 사람은 있다..///";
@@ -662,9 +662,9 @@ function postMsg() {
 
     // 4. 일반 분류
     let type = "normal";
-    if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("목격")) type = "rumor";
-    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("우정") || text.includes("번호")) type = "friend";
-    else if (text.includes("사랑") || text.includes("좋아") || text.includes("설레") || text.includes("내꺼") || text.includes("결혼")) type = "love";
+    if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
+    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("놀자")) type = "friend";
+    else if (text.includes("사랑") || text.includes("좋아") || text.includes("사귀자") || text.includes("내꺼") || text.includes("결혼")) type = "love";
     else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
@@ -681,4 +681,9 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
+
+
+
+
 
