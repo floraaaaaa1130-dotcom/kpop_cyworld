@@ -79,7 +79,7 @@ body {
   width: 80px;
 }
 
-/* ===== 왼쪽 프로필 영역 (수정됨) ===== */
+/* ===== 왼쪽 프로필 영역 ===== */
 .profile {
   width:28%; border-right:1px dashed #ccc;
   padding-right:15px; text-align:center;
@@ -303,9 +303,23 @@ input.comment-input {
     <div id="acorn-3" class="hidden-acorn" onclick="foundAcorn(3)">🌰</div>
 
     <div class="profile">
+      <div class="today-box">
+        <span class="today-label">TODAY IS..</span>
+        <span class="today-icon">☁️</span> <span id="today-mood">행복</span>
+      </div>
+
       <img id="profile-img" class="profile-img">
-      <p id="member-name"></p>
+      
+      <div id="profile-desc" class="profile-desc"></div>
+      
+      <div style="border-top:1px dotted #ccc; width:100%; margin: 10px 0;"></div>
+
+      <p id="member-name" style="font-weight:bold; color:#3b5998; margin:0;"></p>
       <p id="bgm-title"></p>
+      
+      <select id="ilchon-status-bar" class="ilchon-select" disabled>
+        <option>파도타기..</option>
+      </select>
       
       <div style="margin-top:20px; font-size:12px; color:#999;">
         TODAY <span style="color:red">281</span> | TOTAL 12,345
@@ -320,16 +334,18 @@ input.comment-input {
         <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold;">
           방명록 (Guestbook)
         </div>
-        <div id="guestbook-list"></div>
-        <textarea id="user-msg" placeholder="일촌 신청ṑト고 ＞ㅏへㅔ효..."></textarea>
-        <button onclick="postMsg()">확인</button>
+        <div id="guestbook-list" class="scroll-list"></div>
+        <div class="input-wrapper">
+          <textarea id="user-msg" placeholder="일촌 신청ṑト고 ＞ㅏへㅔ효..."></textarea>
+          <button onclick="postMsg()">확인</button>
+        </div>
       </div>
 
       <div id="photos" class="content-area" style="display:none;">
         <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold;">
           사진첩 (Photo)
         </div>
-        <div id="photo-list"></div>
+        <div id="photo-list" class="scroll-list"></div>
       </div>
     </div>
   </div>
@@ -375,22 +391,19 @@ function triggerIlchonRequest() {
   document.getElementById('ilchon-modal').style.display = 'flex';
 }
 
-function acceptIlchon() {
-  alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
-  closeModal('ilchon-modal');
-}
-  
-// ★ 일촌 수락 시 드롭다운 변경 기능 추가 ★
+// ★ 중복 함수 제거 및 기능 통합 ★
 function acceptIlchon() {
   alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
   
   // 드롭다운 업데이트
   const select = document.getElementById('ilchon-status-bar');
-  select.innerHTML = `<option>★ 일촌 (${myName})</option>`;
-  select.style.color = "blue";
-  select.style.fontWeight = "bold";
-  select.disabled = false; // 이제 선택 가능하게 변경
+  if(select) {
+    select.innerHTML = `<option>★ 일촌 (${myName})</option>`;
+    select.style.color = "blue";
+    select.style.fontWeight = "bold";
+    select.disabled = false;
+  }
 }
   
 /* ===== 2. 도토己I 찾기 ===== */
@@ -437,7 +450,7 @@ function showTab(name){
   document.getElementById('tab-' + name).classList.add('active');
 }
 
-/* ===== 3. 성격별 말투 (문법 오류 수정됨) ===== */
+/* ===== 3. 성격별 말투 ===== */
 const replyTemplates = {
   isfp: {
     normal: ["ㅇ ㅏ.. 안녕? ㅎㅎ", "왔나..", "글 남겨줘서 고맙디..///", "나 그냥.. 이어폰 꽂고 침대에 누워 있는데.. MP3 배터리 다 돼가네..", "기타 줄 가는 중.. 이번 축제 때 나갈 거 연습해야 돼서"],
@@ -462,14 +475,14 @@ const replyTemplates = {
   },
   cool_playful: {
     normal: ["안녕~ 근데 빈손이야?ㅋㅋ", `?ㅏㄴㅕ
-  ㄴ   ?`, "나 지금 너한테 답글 남기는 중이지ㅋㅋ", "왔으면 발도장 꾹! ㅋㅋ", "나 지금 피아노 칠까 말까 고민 중 ㅋㅋ 귀찮네~", "비밀인데. 궁금해? 궁금하면 500원 ㅋㅋ", "ㅋㅋㅋ 반갑다"],
+ ㄴ    ?`, "나 지금 너한테 답글 남기는 중이지ㅋㅋ", "왔으면 발도장 꾹! ㅋㅋ", "나 지금 피아노 칠까 말까 고민 중 ㅋㅋ 귀찮네~", "비밀인데. 궁금해? 궁금하면 500원 ㅋㅋ", "ㅋㅋㅋ 반갑다"],
     love: ["오~ 감당 가능? ㅋㅋ", "장난치지 마라~ 설렌다?", "ㅋㅋㅋ 귀엽네 이거"],
     sad: ["에이 왜 우울해~ 웃자", "무슨 일인데? 들어는 줄게", "심각해지지 말자~"],
     rumor: ["비밀인데 어떻게 알았대?", "에이~ 설마~", "너 나 질투해? ㅋㅋ", "글쎄다~?"],
     friend: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "너 하는 거 봐서~ ㅋㅋ", "오냐 받아줌", `
     ●  한!
 ☜=━╋┓턱!
-       ☜=┛쏴!
+        ☜=┛쏴!
       ┏┻┓^^ㆀ
    빵!!!!!!!!!!`]
   },
@@ -500,10 +513,12 @@ const replyTemplates = {
   }
 };
 
-/* ===== 4. 멤버별 데이터 설정 (문법 오류 수정됨) ===== */
+/* ===== 4. 멤버별 데이터 설정 ===== */
 const members = [
   {
     name: "박원빈",
+    desc: "음악만이..\n나라에서 허락한..\n유일한 마약..★",
+    mood: "센치함",
     img: "wonbin_profile.png",
     bgm: { title: "RIIZE - Love 119", src: "bgm_wonbin.mp3" },
     replies: replyTemplates.isfp,
@@ -529,6 +544,8 @@ const members = [
   },
   {
     name: "리쿠",
+    desc: "모찌 먹고 싶다..\n한국어 공부 중!\n일촌 걸어죠 >_<",
+    mood: "기쁨",
     img: "riku_profile.png",
     bgm: { title: "NCT WISH - SAIL AWAY", src: "bgm_riku.mp3" },
     replies: replyTemplates.isfp_riku,
@@ -542,6 +559,8 @@ const members = [
   },
   {
     name: "백준혁",
+    desc: "오늘 내 패션 쫌 쩐다ㅋ\n일촌 신청 안 하면\n바보 멍충이~😛",
+    mood: "간지",
     img: "jun_profile.png",
     bgm: { title: "ID:Earth - Betelgeuse", src: "bgm_jun.mp3" },
     replies: replyTemplates.entp,
@@ -557,6 +576,8 @@ const members = [
   },
   {
     name: "이소희",
+    desc: "노래 부르는 게\n세상에서 젤 좋아♬\n나랑 듀엣 할 사람?",
+    mood: "노래중",
     img: "so4.png",
     bgm: { title: "RIIZE - Get A Guitar", src: "bgm_sohee.mp3" },
     replies: replyTemplates.istp_sohee,
@@ -581,6 +602,8 @@ const members = [
   },
   {
     name: "안건호",
+    desc: "피아노 치는 남자.\n매력 있지 않냐?\n(반박 시 니 말 틀림)",
+    mood: "자신감",
     img: "gun_profile.png",
     bgm: { title: "Kortis - Timeless", src: "bgm_geon.mp3" },
     replies: replyTemplates.cool_playful,
@@ -590,13 +613,15 @@ const members = [
       { img: "gun2.png", text: "엄질머리랑ㅋ", hearts: 303 },
       { img: "gun5.png", text: `
       나 완전히~~~~~~~~~~ ♪
-┏(-.-)┓ ㅅㅐ 돼　ㅇㅓ
+┏(-.-)┓ ㅅㅐ 돼　ㅇㅓ 
 　 / ＼　　　 ㅆ`, hearts: 303 },
       { img: "gun7.png", text: "엽사 올리려다 참는다\n내 이미지 보호해야지 ㅋㅋ", hearts: 250 }
     ]
   },
   {
     name: "오시온",
+    desc: "오늘도 평화로운 하루..\n커피 한 잔의 여유☕\n(With 리쿠)",
+    mood: "여유",
     img: "sion_profile.png",
     bgm: { title: "NCT WISH - WISH", src: "bgm_sion.mp3" },
     replies: replyTemplates.intj,
@@ -613,6 +638,8 @@ const members = [
   },
   {
     name: "송은석",
+    desc: "돌멩이는 굴러가고\n나는 생각한다.\n고로 나는 존재한다.",
+    mood: "멍...",
     img: "dol_profile.png",
     bgm: { title: "RIIZE - Memories", src: "bgm_eunseok.mp3" },
     replies: replyTemplates.istp_eunseok,
@@ -642,9 +669,13 @@ window.onload = () => {
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
   
-  // ★ 추가된 프로필 정보 렌더링 ★
-  document.getElementById("profile-desc").innerText = currentMember.desc || "안녕하세요!";
-  document.getElementById("today-mood").innerText = currentMember.mood || "행복";
+  // ★ 추가된 프로필 정보 렌더링 (이제 태그가 있으니 에러가 나지 않습니다!) ★
+  if(document.getElementById("profile-desc")) {
+    document.getElementById("profile-desc").innerText = currentMember.desc || "안녕하세요!";
+  }
+  if(document.getElementById("today-mood")) {
+    document.getElementById("today-mood").innerText = currentMember.mood || "행복";
+  }
   
   const bgm = document.getElementById("bgm");
   bgm.src = currentMember.bgm.src;
@@ -666,7 +697,7 @@ function renderPhotos(photoList) {
     const el = document.createElement('div');
     el.className = 'photo-post';
     el.innerHTML = `
-      <img src="${p.img}">
+      <img src="${p.img || ''}" style="${!p.img ? 'display:none;' : ''}">
       <p>${(p.text || "").replace(/\n/g, '<br>')}</p>
       <span class="heart" onclick="toggleHeart(this, ${idx})">♥</span>
       <span id="heart-${idx}">${p.hearts}</span>
@@ -804,14 +835,3 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
