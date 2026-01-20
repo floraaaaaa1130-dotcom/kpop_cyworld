@@ -165,7 +165,7 @@ body {
 
 .content-area {
   flex-grow: 1;
-  display: flex;           
+  display: flex;            
   flex-direction: column;  
   overflow: hidden; 
   height: 100%;    
@@ -195,10 +195,10 @@ body {
 }
 
 .scroll-list {
-  flex-grow: 1;           
-  overflow-y: auto;       
-  padding-right: 5px;     
-  min-height: 0;          
+  flex-grow: 1;            
+  overflow-y: auto;        
+  padding-right: 5px;      
+  min-height: 0;           
   scrollbar-width: thin;
   scrollbar-color: #8cc6d1 #f1f1f1;
 }
@@ -207,12 +207,12 @@ body {
 .scroll-list::-webkit-scrollbar-track { background: #f1f1f1; }
 
 .input-wrapper {
-  flex-shrink: 0;         
+  flex-shrink: 0;          
   margin-top: 10px;
   border-top: 2px solid #eee;
   padding-top: 10px;
   background: white;
-  z-index: 10;           
+  z-index: 10;            
 }
 
 .guestbook-entry {
@@ -469,7 +469,45 @@ input.comment-input {
           </div>
         </div>
       </div>
+      
+      <div id="hints" class="content-area scroll-list" style="display:none;">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
+          키워드 힌트 (Keywords)
+        </div>
+        <div class="home-content">
+          <div class="home-section">
+            <span class="home-title">① 공통 키워드 (All Members)</span>
+            <ul style="padding-left: 20px; margin: 5px 0;">
+              <li><b>Normal:</b> 원빈 5개 / 소희 4개 / 은석 5개 / 리쿠 5개 / 시온 5개 / 백준혁 4개 / 안건호 4개</li>
+              <li><b>Love:</b> 원빈 3개 / 소희 4개 / 은석 3개 / 리쿠 4개 / 시온 4개 / 백준혁 3개 / 안건호 3개</li>
+              <li><b>Sad:</b> 원빈 3개 / 소희 3개 / 은석 4개 / 리쿠 3개 / 시온 4개 / 백준혁 3개 / 안건호 3개</li>
+              <li><b>Rumor:</b> 원빈 4개 / 소희 5개 / 은석 4개 / 리쿠 3개 / 시온 4개 / 백준혁 4개 / 안건호 4개</li>
+              <li><b>Friend:</b> 원빈 4개 / 소희 3개 / 은석 5개 / 리쿠 4개 / 시온 4개 / 백준혁 4개 / 안건호 4개</li>
+              <li><b>Doing:</b> 원빈 3개 / 소희 3개 / 은석 4개 / 리쿠 3개 / 시온 3개 / 백준혁 4개 / 안건호 5개</li>
+              <li><b>Special:</b> girlfriend, birthday (각 1개)</li>
+            </ul>
+          </div>
 
+          <div class="home-section">
+            <span class="home-title">② 멤버별 이스터에그</span>
+            <ul style="padding-left: 20px; margin: 5px 0; line-height: 1.8;">
+              <li><b>박원빈(4):</b> 🎸 / 🐱 / 🤳/ ⛴</li>
+              <li><b>송은석(5):</b> 🗿 / 👑 / 😴/ 🤣</li>
+              <li><b>이소희(5):</b> 🎤 / 🧢 / ?음 / 애칭 / 🥺</li>
+              <li><b>오시온(4):</b> 🍰 / ☕️ / 📚 / 💗 </li>
+              <li><b>백준혁(4):</b> 칭찬 / 질투 / 💪 / 📝</li>
+              <li><b>리쿠(6):</b> 일본어 / 🥺 / 年上 / 고백 / 🐹 / 🍡</li>
+              <li><b>안건호(4):</b> 🎹 / 🎶 / 📆 / 😛</li>
+            </ul>
+          </div>
+
+          <div class="home-section" style="text-align:center;">
+            <span class="home-title">Made by.</span>
+            <p><b>Insta:</b> @jpn.boys</p>
+            <p><b>Twitter:</b> @3hstellah3</p>
+          </div>
+        </div>
+      </div> 
       <div id="guestbook" class="content-area" style="display:none;">
         <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
           방명록 (Guestbook)
@@ -492,7 +530,7 @@ input.comment-input {
 
   <div class="menu-container">
     <div id="tab-home" class="menu-tab active" onclick="showTab('home')">홈</div>
-    <div class="menu-tab" onclick="showAlert('준비중입Ꮮㅣ㉰')">프로필</div>
+    <div id="tab-hints" class="menu-tab" onclick="showTab('hints')">힌트</div>
     <div class="menu-tab" onclick="showAlert('준비중입Ꮮㅣ㉰')">다이어리</div>
     <div id="tab-photos" class="menu-tab" onclick="showTab('photos')">사진첩</div>
     <div id="tab-guestbook" class="menu-tab" onclick="showTab('guestbook')">방명록</div>
@@ -522,8 +560,6 @@ function enterSite() {
     myName = input.value.trim();
   }
   
-  // ▼▼▼ [핵심 수정] 아래 내용들이 추가되어야 데이터가 보입니다! ▼▼▼
-  
   // 1. 프로필 이미지와 소개글 연결
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("profile-desc").innerText = currentMember.desc;
@@ -535,19 +571,17 @@ function enterSite() {
   </marquee>
 `;
   const bgm = document.getElementById("bgm");
-  bgm.src = currentMember.bgm.src; // 오디오 파일 경로 설정 필수!
+  bgm.src = currentMember.bgm.src; 
 
   // 3. 사진첩 목록 렌더링 실행
   renderPhotos(currentMember.photos);
-
-  // ▲▲▲ [수정 끝] ▲▲▲
 
   // 입장 모달 숨기기
   document.getElementById('entry-modal').style.display = 'none';
   // 메인 화면 표시
   document.getElementById('main-wrapper').style.visibility = 'visible';
   
-  // BGM 재생 시도 (소스가 연결되었으므로 이제 소리가 날 거예요)
+  // BGM 재생 시도
   bgm.volume = 0.5;
   bgm.play().catch(error => {
     console.log("Auto-play blocked by browser policy");
@@ -598,7 +632,6 @@ function triggerIlchonRequest() {
 }
 
 function acceptIlchon() {
-  // ★ 알림창도 showAlert로 변경
   showAlert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
   
@@ -644,7 +677,6 @@ function foundAcorn(id) {
       if(!bgm.paused) bgm.volume = 1.0; 
     }, 300);
   } else {
-    // ★ 알림창도 showAlert로 변경
     showAlert(`도토己I를 찾았다! (${foundCount}/3)\n남은 도토己I가 나올 때까지 기다려보세요!`);
   }
 }
@@ -653,6 +685,7 @@ function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
   
   document.getElementById('home').style.display = (name==='home') ? 'flex' : 'none';
+  document.getElementById('hints').style.display = (name==='hints') ? 'flex' : 'none';
   document.getElementById('guestbook').style.display = (name==='guestbook') ? 'flex' : 'none';
   document.getElementById('photos').style.display = (name==='photos') ? 'flex' : 'none';
   
@@ -824,7 +857,7 @@ const members = [
 교복이란 죄수복을 입고
 공부란 벌을 받고
 졸업이란 석방을 기다린다`, hearts: 2320 },
-         { img: "jun5.png", text: `어떨진 몰라
+          { img: "jun5.png", text: `어떨진 몰라
 어쩔진 몰라
 
 손이가는데로
@@ -1079,12 +1112,6 @@ Coldy한 나
 const currentMember = members[Math.floor(Math.random() * members.length)];
 
 window.onload = () => {
-  // ★ 페이지 로드 시에는 오직 기본 데이터만 세팅 (모달, 음악, 사진 로딩 금지) ★
-  // document.getElementById("profile-img").src = currentMember.img; <-- 삭제됨
-  // renderPhotos(currentMember.photos); <-- 삭제됨
-  // 위 작업들은 enterSite()에서 수행해야 흐름이 맞습니다.
-  
-  // 하지만 사용자 편의를 위해 "입장 전"에도 이름은 세팅해두면 좋습니다.
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
 };
 
@@ -1263,5 +1290,3 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
-
