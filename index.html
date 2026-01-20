@@ -224,11 +224,12 @@ body {
   font-size: 13px; 
 }
 .ai-reply {
-  color:#ff6600;
-  margin-top:4px;
-  border-top:1px dotted #ccc;
-  padding-top:4px;
-  font-size: 12px; 
+  background: #fff;
+  padding: 5px;
+  border: 1px solid #eee;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #333;
 }
 textarea {
   width:100%;
@@ -576,6 +577,10 @@ function enterSite() {
   // 3. 사진첩 목록 렌더링 실행
   renderPhotos(currentMember.photos);
 
+  // ▼▼▼ [추가] 4. 초기 방명록(멤버들 대화) 렌더링 실행 ▼▼▼
+  renderInitialGuestbook();
+  // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
   // 입장 모달 숨기기
   document.getElementById('entry-modal').style.display = 'none';
   // 메인 화면 표시
@@ -762,7 +767,7 @@ const replyTemplates = {
   }
 };
 
-/* ===== 4. 멤버별 데이터 설정 ===== */
+/* ===== 4. 멤버별 데이터 설정 (방명록 포함) ===== */
 const members = [
   {
     name: "박원빈",
@@ -772,6 +777,11 @@ const members = [
     bgm: { title: "BGH to - 솜사탕 (Feat. 티아라 은정)", src: "bgm_wonbin.mp3" },
     replies: replyTemplates.isfp,
     secretPhoto: "wonbin3.png",
+    guestbook: [
+      { name: "오시온", msg: "야 뭐해ㅋㅋ", date: "2005.06.14", reply: "뭐하겠노.. 기타치지ㅋㅋ" },
+      { name: "송은석", msg: "또 방구석에서 청승 떨고 있니? 피방 가자", date: "2005.06.12", reply: "네 형.." },
+      { name: "이소희", msg: "형 토욜에 연습실 가서 축제 때 부를 곡 키 좀 잡아줘ㅠ 맛있는 거 사줄게", date: "2005.06.10", reply: "알겠다.. 근데 소희야.. 고음 살살 질러라.. 내 귀 터질 것 같다.." }
+    ],
     photos: [
       { img: "wonbin_guitar.png", text: "오늘 연습 끝..\n손가락 물집 잡혔다 ㅠㅠ\n그래도 재밌네 역시", hearts: 1004 },
       { img: "wonbin4.png", text: `때론 감정없는 인형이 되고 싶다.
@@ -805,6 +815,10 @@ const members = [
     bgm: { title: "브라운아이드걸스 - LOVE", src: "bgm_riku.mp3" },
     replies: replyTemplates.isfp_riku,
     secretPhoto: "riku3.png",
+    guestbook: [
+      { name: "오시온", msg: "리쿠 한국어 공부 어렵지? 모르는 거 있으면 언제든 물어봐^^", date: "2005.06.15", reply: `웅 시온군!! 고마워 ㅎㅎ 마지텐시.. >_<
+      근데 나 배고파.. 떡볶이 사주떼여..` }
+    ],
     photos: [
       { img: "riku1.png", text: ">_<", hearts: 808 },
       { text: `38317 :거꾸로 LIEBE 독일어로 '사랑'
@@ -845,6 +859,9 @@ const members = [
     bgm: { title: "프리스타일 - Y(Please Tell Me Why)", src: "bgm_eunseok.mp3" },
     replies: replyTemplates.entp,
     secretPhoto: "jun2.png",
+    guestbook: [
+      { name: "안건호", msg: "형 오늘 스타일 좀 간지나더라ㅋㅋ", date: "2005.06.13", reply: "보는 눈은 있어가지고 ㅋ 너도 봐줄만하던데? 내 옆에 서도 꿀리지 않겠어. 인정 ㅋ" }
+    ],
     photos: [
       { img: "jun1.png", text: `이제 독하게 살 준비를 해야한다.
 
@@ -887,6 +904,9 @@ const members = [
     bgm: { title: "MC몽 - 죽을 만큼 아파서 (feat. 멜로우)", src: "bgm_sohee.mp3" },
     replies: replyTemplates.istp_sohee,
     secretPhoto: "so3.png",
+    guestbook: [
+      { name: "송은석", msg: "그 비니 머리에 본드로 붙였니? 냄새 안 남? 좀 벗어라 ㅋ", date: "2005.06.11", reply: "뭐래ㅡㅡ;; 형 개그보다 내 비니가 더 신선함 신경 끄셈." }
+    ],
     photos: [
       { img: "so2.png", text: `난 지금 미쳐가고있다
 이 헤드폰에 내 모든 몸과
@@ -934,6 +954,9 @@ const members = [
     bgm: { title: "슈프림팀, 영준 - 그땐 그땐 그땐", src: "bgm_geon.mp3" },
     replies: replyTemplates.cool_playful,
     secretPhoto: "gun3.png",
+    guestbook: [
+      { name: "백준혁", msg: "야 아까 음악실에서 피아노 칠 때 폼 좀 나더라? 좀 느끼하긴 한데 봐줄만했음 ㅋ", date: "2005.06.14", reply: "느끼하다니; 그게 바로 'Soul'임요. 형도 반함?ㅋㅋ" }
+    ],
     photos: [
       { img: "gun1.png", text: `니가 오해할까봐 그러는데
 나 아무한테나 그러지않아
@@ -1008,6 +1031,15 @@ Coldy한 나
     bgm: { title: "더 넛츠 - 사랑의 바보", src: "bgm_sion.mp3" },
     replies: replyTemplates.intj,
     secretPhoto: "sion6.png",
+    guestbook: [
+      { name: "박원빈", msg: "온아.. 니가 저번에 빌려준 책 다 읽었다.. 문장이 참.. 마음을 울리네.. 내일 돌려줄게..", date: "2005.06.13", reply: "ㅋㅋㅋㅋ진짜 다 읽은거 맞지? 낼 내용 물어본다" },
+             { 
+    name: "리쿠", 
+    msg: "시온군!! 어제 진짜 왕자님 같아써..(반짝반짝) 나도 시온군처럼 멋잇어지고 시퍼..🥺 나랑도 스티커사진 찍어주면 안돼?? >_<", 
+    date: "2005.06.15", 
+    reply: "리쿠 고마워ㅎㅎ 근데 귀여운 게 최고야ㅋㅋ 그래 나중에 찍으러 가자. 형이 케익도 사줄게^^" 
+  }
+    ],
     photos: [
       { img: "sion1.png", text: "by 리쿠", hearts: 707 },
       { img: "sion2.png", text: `내가 열수있는건 여기까지
@@ -1045,6 +1077,10 @@ Coldy한 나
     bgm: { title: "izi - 응급실", src: "bgm_dol.mp3" },
     replies: replyTemplates.istp_eunseok,
     secretPhoto: "dol2.png",
+    guestbook: [
+      { name: "이소희", msg: "돌형 나 이번 축제 때 나 발라드 할까 댄스 할까? 진지하게 추천 좀.", date: "2005.06.12", reply: "그냥 마임 해라. 침묵은 금이다." },
+      { name: "박원빈", msg: "형아.. 피방 가자고 전화 좀 그만 해라.. 나 자고 있었다..", date: "2005.06.08", reply: "잠이 오냐? 지금 내 레벨업이 걸려있는데. 빨리 튀어오셈." }
+    ],
     photos: [
       { img: "dol1.png", text: "돌찬영과", hearts: 1435 },
       { text: `온몸이 쑤시네...
@@ -1277,9 +1313,9 @@ function postMsg() {
     else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("슬픔") || text.includes("지쳐") || text.includes("울고") || text.includes("흑흑") || text.includes("엉엉") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
-    const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
+  const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
     
-    document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${reply}`;
+    document.getElementById(id).innerHTML = `<span style="color:#ff6600; font-weight:bold;">ㄴ ${currentMember.name}:</span> ${reply}`;
   }, 1000);
 }
 
@@ -1287,9 +1323,35 @@ window.addEventListener("click", () => {
   const bgm = document.getElementById("bgm");
   if (bgm.paused) { bgm.volume = 0.5; bgm.play(); }
 }, { once: true });
+
+  /* ★ 초기 방명록(멤버들끼리의 대화) 렌더링 ★ */
+function renderInitialGuestbook() {
+  const list = document.getElementById("guestbook-list");
+  list.innerHTML = ""; // 초기화
+
+  // 해당 멤버의 방명록 데이터가 있으면 렌더링
+  if (currentMember.guestbook && currentMember.guestbook.length > 0) {
+    currentMember.guestbook.forEach(item => {
+      const entry = document.createElement("div");
+      entry.className = "guestbook-entry";
+      entry.innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+          <b style="color:#3b5998;">${item.name}</b>
+          <span style="font-size:11px; color:#999;">(${item.date})</span>
+        </div>
+        <div style="margin-bottom:8px;">${item.msg}</div>
+        <div class="ai-reply" style="display:block; background:#fff; padding:5px; border:1px solid #eee;">
+          <span style="color:#ff6600; font-weight:bold;">ㄴ ${currentMember.name}:</span> ${item.reply}
+        </div>
+      `;
+      list.appendChild(entry);
+    });
+  } else {
+    // 방명록 데이터가 없는 경우 (혹시 모를 에러 방지)
+    list.innerHTML = "<div style='padding:20px; text-align:center; color:#999;'>아직 방명록이 없습니다.</div>";
+  }
+}
+
 </script>
 </body>
 </html>
-
-
-
