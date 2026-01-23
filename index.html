@@ -42,7 +42,6 @@ body {
   position: relative;
   flex-shrink: 0; 
   transform-origin: top center;
-  /* 처음에는 숨겨둠 (인트로 팝업 후 등장) */
   visibility: hidden; 
 }
 
@@ -1216,7 +1215,6 @@ function postMsg() {
   setTimeout(() => {
     const text = userMsg.replace(/\s/g, "").toLowerCase();
     
-    // ★ 여기가 핵심: 매번 normal로 초기화해야 "뭐해" 입력 후 다른 말을 해도 doing이 안 나옴!
     let type = "normal";
 
     // 1. 여친/짝사랑 질문
@@ -1355,6 +1353,7 @@ function renderInitialGuestbook() {
 </script>
 </body>
 </html>
+
 
 
 
